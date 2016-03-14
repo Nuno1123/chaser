@@ -7,21 +7,41 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+    SpriteBatch batch;
+    Texture img;
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
+    private Field field;
+    private Sheep[] sheeps;
+    private Dog dog;
+
+
+    public void moveSheep() {
+        /*
+		if dog !insideRadius2 -> sheep.move(quietly, random angle)
+
+		if dog insideRadius2 && dog !insideRadius1 ->
+
+			if dog running -> sheep.move(desperately, random angle [-45,+45])
+			if dog walking -> sheep.move(half speed, angle same as dog)
+			if dog stop -> sheep.move(quietly, random angle)
+
+		if dog insideRadius1 -> sheep.move(desperately, random angle [-45,+45])
+
+		*/
+    }
+
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        img = new Texture("badlogic.jpg");
+    }
+
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        batch.draw(img, 0, 0);
+        batch.end();
+    }
 }
