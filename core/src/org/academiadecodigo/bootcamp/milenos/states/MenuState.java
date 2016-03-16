@@ -3,7 +3,7 @@ package org.academiadecodigo.bootcamp.milenos.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.academiadecodigo.bootcamp.milenos.Game;
+import org.academiadecodigo.bootcamp.milenos.DogTrials;
 
 /**
  * Created by milena on 16/03/16.
@@ -14,7 +14,7 @@ public class MenuState extends State {
 
     public MenuState(GameStateManager gms) {
         super(gms);
-        background = new Texture("bg.png");
+        background = new Texture("background.jpg");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class MenuState extends State {
     @Override
     public void render(SpriteBatch sb) {
         sb.begin();
-        sb.draw(background, 0, 0, Game.WIDTH, Game.HEIGHT);
+        sb.draw(background, 0, 0, DogTrials.WIDTH, DogTrials.HEIGHT);
         sb.end();
     }
 

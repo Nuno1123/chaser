@@ -10,10 +10,10 @@ import org.academiadecodigo.bootcamp.milenos.sprites.Sheep;
 import org.academiadecodigo.bootcamp.milenos.states.GameStateManager;
 import org.academiadecodigo.bootcamp.milenos.states.MenuState;
 
-public class Game extends ApplicationAdapter {
+public class DogTrials extends ApplicationAdapter {
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 720;
     public static final String TITLE = "Doggy";
 
     private Field field;
@@ -22,21 +22,6 @@ public class Game extends ApplicationAdapter {
 
     private SpriteBatch batch;
     private GameStateManager gms;
-
-    public void moveSheep() {
-        /*
-		if dog !insideRadius2 -> sheep.move(quietly, random angle)
-
-		if dog insideRadius2 && dog !insideRadius1 ->
-
-			if dog running -> sheep.move(desperately, random angle [-45,+45])
-			if dog walking -> sheep.move(half speed, angle same as dog)
-			if dog stop -> sheep.move(quietly, random angle)
-
-		if dog insideRadius1 -> sheep.move(desperately, random angle [-45,+45])
-
-		*/
-    }
 
     @Override
     public void create() {
