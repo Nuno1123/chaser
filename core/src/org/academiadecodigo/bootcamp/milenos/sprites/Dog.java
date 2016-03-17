@@ -25,15 +25,23 @@ public class Dog extends Animal {
 
     private static final float CYCLE_TIME = 0.5f;
 
-    private static final int VELOCITY_RUNNING = 140;
-    private static final int VELOCITY_WALKING = 60;
+    private final int VELOCITY_RUNNING = 140;
+    private final int VELOCITY_WALKING = 60;
 
+    public int getVelocityRunning() {
+        return VELOCITY_RUNNING;
+    }
+    public int getVelocityWalking() {
+        return VELOCITY_WALKING;
+    }
 
     private Vector2 position;
     private Vector2 velocity;
     private Animation[] dogAnimations;
     private Animation currentAnimation;
     private Rectangle bounds;
+
+    private int currentVelocity;
 
 
     /**
@@ -53,6 +61,7 @@ public class Dog extends Animal {
         };
 
         currentAnimation = dogAnimations[0];
+        currentVelocity = 0;
 
         bounds = new Rectangle(x, y,
                 currentAnimation.getSprite().getWidth() / NUM_FRAMES_RUN,
@@ -61,6 +70,10 @@ public class Dog extends Animal {
 
     public Vector2 getPosition() {
         return position;
+    }
+
+    public int getCurrentVelocity() {
+        return currentVelocity;
     }
 
     public Animation getAnimation() {
@@ -99,22 +112,28 @@ public class Dog extends Animal {
     }
 
     public void run() {
-        // Sets the current animation to the running dog
+        // Sets the current animation and velocity to the running dog
         currentAnimation = dogAnimations[2];
-        velocity.x = VELOCITY_RUNNING * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
-        velocity.y = VELOCITY_RUNNING * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        currentVelocity = VELOCITY_RUNNING;
+
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
     }
 
     public void walk() {
-        // Sets the current animation to the walking dog
+        // Sets the current animation and velocity to the walking dog
         currentAnimation = dogAnimations[1];
-        velocity.x = VELOCITY_WALKING * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
-        velocity.y = VELOCITY_WALKING * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        currentVelocity = VELOCITY_WALKING;
+
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
     }
 
     public void stop() {
-        // Sets the current animation to the stop dog
+        // Sets the current animation and velocity to the stop dog
         currentAnimation = dogAnimations[0];
+        currentVelocity = 0;
+
         velocity.x = 0;
         velocity.y = 0;
     }
