@@ -25,8 +25,9 @@ public class Dog extends Animal {
 
     private static final float CYCLE_TIME = 0.5f;
 
-    //private Texture dogTexture = new Texture("d0000.png");
-    //private Sprite dogText = new Sprite(dogTexture);
+    private static final int VELOCITY_RUNNING = 140;
+    private static final int VELOCITY_WALKING = 60;
+
 
     private Vector2 position;
     private Vector2 velocity;
@@ -35,13 +36,15 @@ public class Dog extends Animal {
     private Rectangle bounds;
 
 
-    //private Texture dog;
-
-
+    /**
+     * Constructor
+     * @param x position in the x axis (in pixels)
+     * @param y position in the y axis (in pixels)
+     */
     public Dog(int x, int y) {
+
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
-        //dog = new Texture(PATH_STOP);
 
         dogAnimations = new Animation[]{
                 new Animation(new TextureRegion(new Texture(PATH_STOP)), NUM_FRAMES_STOP, CYCLE_TIME),
@@ -60,24 +63,14 @@ public class Dog extends Animal {
         return position;
     }
 
-    /*public TextureRegion getTexture() {
-        return currentAnimation.getSprite();
-    }*/
-
-    /*public Sprite getDogText() {
-        return dogText;
-    }*/
-
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
     public Animation getAnimation() {
         return currentAnimation;
     }
 
     //reset the position in the game
     public void update(float dt) {
+
+        //TODO: Correct the limits with the width and height of the image
 
         currentAnimation.update(dt);
 
@@ -100,46 +93,49 @@ public class Dog extends Animal {
         //multiply velocity by a deltatime to scale
         velocity.scl(dt);
         position.add(velocity.x, velocity.y);
-        //position.add(dogText.getX(), dogText.getY());
         //reverse the scaled velocity
         velocity.scl(1 / dt);
         bounds.setPosition(position.x, position.y);
     }
 
     public void run() {
+        // Sets the current animation to the running dog
         currentAnimation = dogAnimations[2];
-        velocity.x = 140 * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
-        velocity.y = 140 * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.x = VELOCITY_RUNNING * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.y = VELOCITY_RUNNING * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
     }
 
     public void walk() {
+        // Sets the current animation to the walking dog
         currentAnimation = dogAnimations[1];
-        velocity.x = 60 * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
-        velocity.y = 60 * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.x = VELOCITY_WALKING * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.y = VELOCITY_WALKING * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
     }
 
     public void stop() {
+        // Sets the current animation to the stop dog
         currentAnimation = dogAnimations[0];
         velocity.x = 0;
         velocity.y = 0;
     }
 
     public void rotateLeft() {
-
- /*       dogRunAnimation.getSprite().setOrigin(dogRunAnimation.getSprite().getWidth()/2, dogRunAnimation.getSprite().getHeight()/2);
-        dogRunAnimation.getSprite().rotate(1);*/
+        // Rotate all animations
         for (Animation dogAnimation : dogAnimations) {
-            rotateAllLeft(dogAnimation);
+            rotateAllSpritesLeft(dogAnimation);
         }
-        /*dogText.setOrigin(dogText.getWidth()/2, dogText.getHeight()/2);
-        dogText.rotate(2);
-        */
-
     }
 
-    private void rotateAllLeft(Animation dogAnimation) {
-        Iterator<Sprite> it = dogAnimation.iterator();
+    public void rotateRight() {
+        // Rotate all animations
+        for (Animation dogAnimation : dogAnimations) {
+            rotateAllSpritesRight(dogAnimation);
+        }
+    }
 
+    private void rotateAllSpritesLeft(Animation dogAnimation) {
+
+        Iterator<Sprite> it = dogAnimation.iterator();
         Sprite sprite;
 
         while (it.hasNext()) {
@@ -147,25 +143,11 @@ public class Dog extends Animal {
             sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
             sprite.rotate(1);
         }
-
     }
 
+    private void rotateAllSpritesRight(Animation dogAnimation) {
 
-    public void rotateRight() {
-
-/*        dogRunAnimation.getSprite().setOrigin(dogRunAnimation.getSprite().getWidth() / 2, dogRunAnimation.getSprite().getHeight() / 2);
-        dogRunAnimation.getSprite().rotate(-1);*/
-        for (Animation dogAnimation : dogAnimations) {
-            rotateAllRight(dogAnimation);
-        }
-        /*dogText.setOrigin((dogText.getWidth())/2, dogText.getHeight()/2);
-        dogText.rotate(-2);
-        */
-    }
-
-    private void rotateAllRight(Animation dogAnimation) {
         Iterator<Sprite> it = dogAnimation.iterator();
-
         Sprite sprite;
 
         while (it.hasNext()) {
@@ -173,21 +155,16 @@ public class Dog extends Animal {
             sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
             sprite.rotate(-1);
         }
-
     }
 
     public void dispose() {
         for (Animation anim : dogAnimations) {
             anim.getSprite().getTexture().dispose();
         }
-        //dog.dispose();
-        //dogTexture.dispose();
     }
 
     @Override
     public void move(int speed, int angle) {
 
     }
-
-    //TODO: react to keyboard input
 }

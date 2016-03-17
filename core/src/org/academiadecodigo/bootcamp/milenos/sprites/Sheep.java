@@ -44,10 +44,6 @@ public class Sheep extends Animal {
 
     @Override
     public void move(int speed, int angle) {
-
-
-
     }
 
-    //TODO: moves accordingly to dog
 }

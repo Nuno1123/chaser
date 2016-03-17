@@ -11,7 +11,7 @@ import java.util.Iterator;
  */
 public class Animation {
 
-    private Array<TextureRegion> frames;
+    private Array<Sprite> sprites; //TODO:
 
     //how long a frame stays in view before switch
     private float maxframeTime;
@@ -25,26 +25,26 @@ public class Animation {
     //current frame
     private int frame;
 
-    private Array<Sprite> sprites; //TODO:
 
     //cycleTime how long it will take to cycle through all the animation
     public Animation(TextureRegion region, int frameCount, float cycleTime) {
-        frames = new Array<TextureRegion>();
-        sprites = new Array<Sprite>(); //TODO
+
+        sprites = new Array<Sprite>();
         //the width of a single frame
         int frameWidth = region.getRegionWidth() / frameCount;
 
         for (int i = 0; i < frameCount; i++) {
-            //frames.add(new TextureRegion(region, i * frameWidth, 0, frameWidth, region.getRegionHeight()));
-            sprites.add(new Sprite(new TextureRegion(region, i * frameWidth, 0, frameWidth, region.getRegionHeight()))); //TODO
+            sprites.add(new Sprite(new TextureRegion(region, i * frameWidth, 0, frameWidth, region.getRegionHeight())));
         }
+
         this.frameCount = frameCount;
         maxframeTime = cycleTime / frameCount;
         frame = 0;
     }
 
-    //dt time beetwen render cycles
+    //dt time between render cycles
     public void update(float dt) {
+
         currentFrameTime += dt;
         if (currentFrameTime > maxframeTime) {
             frame++;
@@ -56,14 +56,12 @@ public class Animation {
         }
     }
 
-    //TODO: GOOD LORD
+    /**
+     * @return a sprites iterator
+     */
     public Iterator<Sprite> iterator() {
         return sprites.iterator();
     }
-
-    /*public TextureRegion getFrame() {
-        return frames.get(frame);
-    }*/
 
     public Sprite getSprite() { //TODO
         return sprites.get(frame);

@@ -29,45 +29,42 @@ public class PlayState extends State {
     @Override
     public void handleInput() {
 
+        // Keys for dog rotation
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             dog.rotateLeft();
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             dog.rotateRight();
         }
 
+        // Keys for dog speed
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             dog.run();
-
         } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             dog.walk();
-
         } else {
             dog.stop();
         }
-
     }
 
     @Override
     public void update(float dt) {
         handleInput();
         dog.update(dt);
-
     }
 
     @Override
     public void render(SpriteBatch sb) {
         sb.begin();
         sb.draw(bg, 0, 0, DogTrials.WIDTH, DogTrials.HEIGHT);
-        //sb.draw(dog.getTexture(), dog.getPosition().x, dog.getPosition().y);
+
+        // Move dog
         dog.getAnimation().getSprite().setPosition(dog.getPosition().x, dog.getPosition().y);
         dog.getAnimation().getSprite().draw(sb);
-        /*dog.getDogText().setPosition(dog.getPosition().x, dog.getPosition().y);
-        dog.getDogText().draw(sb);
-        */
+
+        // Move Sheep
         moveSheep();
-        //sb.draw(dog.getDogText(), dog.getPosition().x, dog.getPosition().y);
+
         sb.end();
     }
 

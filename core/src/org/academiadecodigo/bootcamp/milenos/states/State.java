@@ -25,7 +25,7 @@ public abstract class State {
 
     public abstract void handleInput();
 
-    //dt: difference beetwen the rendered frame and the next one
+    //dt: difference between the rendered frame and the next one
     public abstract void update(float dt);
 
     //container of everything we need to render (textures etc)
