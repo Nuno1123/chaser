@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
+import org.academiadecodigo.bootcamp.milenos.utils.Direction;
 
 import java.util.Iterator;
 
@@ -42,6 +43,8 @@ public class Dog extends Animal {
     private Rectangle bounds;
 
     private int currentVelocity;
+    private Direction direction;
+    private Vector2 lasPosition;
 
 
     /**
@@ -78,6 +81,10 @@ public class Dog extends Animal {
 
     public Animation getAnimation() {
         return currentAnimation;
+    }
+
+    public Dog(Direction direction) {
+        this.direction = direction;
     }
 
     //reset the position in the game
@@ -185,5 +192,9 @@ public class Dog extends Animal {
     @Override
     public void move(int speed, int angle) {
 
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
     }
 }

@@ -12,17 +12,20 @@ import org.academiadecodigo.bootcamp.milenos.sprites.Sheep;
  * Created by milena on 16/03/16.
  */
 public class PlayState extends State {
-    public static final int DOG_X = 50;
-    public static final int DOG_Y = 200;
+    public static final int DOG_X = 0;
+    public static final int DOG_Y = 0;
+    private static final int NUM_SHEEPS = 4;
 
     private Dog dog;
     private Texture bg;
-    private Sheep sheep;
+    private Sheep[] sheeps = new Sheep[NUM_SHEEPS];
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
         dog = new Dog(DOG_X, DOG_Y);
-        sheep = new Sheep(50, 50);
+        for (int i = 0; i < NUM_SHEEPS; i++) {
+            sheeps[i] = new Sheep(400 + i * 100, 400);
+        }
         bg = new Texture("bg.png");
     }
 
@@ -51,6 +54,9 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         dog.update(dt);
+        for (int i = 0; i < sheeps.length; i++) {
+            sheeps[i].update(dt);
+        }
     }
 
     @Override
@@ -65,6 +71,11 @@ public class PlayState extends State {
         // Move Sheep
         moveSheep();
 
+        for (int i = 0; i < sheeps.length; i++) {
+            sheeps[i].getSheepAnimation().getSprite().setPosition(sheeps[i].getPosition().x, sheeps[i].getPosition().y);
+            sheeps[i].getSheepAnimation().getSprite().draw(sb);
+        }
+
         sb.end();
     }
 
@@ -72,20 +83,14 @@ public class PlayState extends State {
     public void dispose() {
         bg.dispose();
         dog.dispose();
+        for (int i = 0; i < sheeps.length; i++) {
+            sheeps[i].dispose();
+        }
     }
 
     public void moveSheep() {
-        /*
-        if dog !insideRadius2 -> sheep.move(quietly, random angle)
-
-		if dog insideRadius2 && dog !insideRadius1 ->
-
-			if dog running -> sheep.move(desperately, random angle [-45,+45])
-			if dog walking -> sheep.move(half speed, angle same as dog)
-			if dog stop -> sheep.move(quietly, random angle)
-
-		if dog insideRadius1 -> sheep.move(desperately, random angle [-45,+45])
-
-		*/
+        for (int i = 0; i < sheeps.length; i++) {
+            sheeps[i].move(dog, sheeps);
+        }
     }
 }
