@@ -122,7 +122,52 @@ public class Sheep extends Animal {
     }
 
     private void rotateToOtherSheep(Sheep[] sheeps) {
-        //TODO: implement
+
+        boolean farAway = true;
+
+        for (Sheep s : sheeps) {
+
+            if (this.equals(s)) {
+                continue;
+            }
+
+            if (Math.abs(position.x - s.getPosition().x) < radius1 &&
+                    Math.abs(position.y - s.getPosition().y) < radius1) {
+                farAway = false;
+                break;
+            }
+        }
+
+
+        int sheepToGoTo = (int) (Math.random() * sheeps.length) + 1;
+        while (sheeps[sheepToGoTo].equals(this)) {
+            sheepToGoTo = (int) (Math.random() * sheeps.length) + 1;
+        }
+
+        if (farAway) {
+
+            Iterator<Sprite> it = sheepAnimation.iterator();
+            Sprite sprite;
+
+            while (it.hasNext()) {
+                sprite = it.next();
+                sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+                sprite.rotate(sheeps[sheepToGoTo].getSheepAnimation().getSprite().getRotation()); // TODO: DOES THIS WORK?
+            }
+            return;
+        }
+
+        int randomRotation = -180 + (int) (Math.random() * 180) + 1;
+
+        Iterator<Sprite> it = sheepAnimation.iterator();
+        Sprite sprite;
+
+        while (it.hasNext()) {
+            sprite = it.next();
+            sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+            sprite.rotate(randomRotation); // TODO: DOES THIS WORK?
+        }
+
     }
 
 
