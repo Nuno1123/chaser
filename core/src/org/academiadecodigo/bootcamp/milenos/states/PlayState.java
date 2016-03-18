@@ -54,6 +54,12 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         dog.update(dt);
+
+        for (int i = 0; i < sheeps.length; i++) { //TODO: check collisions between sheeps, NOT WORKING YET
+            Sheep sheep = sheeps[i];
+            sheep.collides(sheeps);
+        }
+
         for (int i = 0; i < sheeps.length; i++) {
             sheeps[i].update(dt);
         }

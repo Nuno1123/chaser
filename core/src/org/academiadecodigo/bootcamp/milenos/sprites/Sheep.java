@@ -68,6 +68,18 @@ public class Sheep extends Animal {
         bounds = new Rectangle(x, y, currentAnimation.getSprite().getWidth(), currentAnimation.getSprite().getHeight());
     }
 
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public void setCurrentVelocity(int currentVelocity) {
+        this.currentVelocity = currentVelocity;
+    }
+
+    public void setCurrentAnimation(Animation currentAnimation) {
+        this.currentAnimation = currentAnimation;
+    }
+
     public Vector2 getPosition() {
         return position;
     }
@@ -305,6 +317,21 @@ public class Sheep extends Animal {
 
     public void dispose() {
         currentAnimation.getSprite().getTexture().dispose();
+    }
+
+    public void collides(Sheep[] sheeps) { //TODO: set velocity to 0 when sheeps collide
+        for (int i = 0; i < sheeps.length; i++) {
+            if (this.equals(sheeps[i])) {
+                continue;
+            }
+            if (sheeps[i].getBounds().overlaps(bounds)) {
+                System.out.println("sheeps collided");
+                /*sheeps[i].setCurrentVelocity(0);
+                sheeps[i].setCurrentAnimation(sheepAnimations[0]);
+                currentVelocity = 0;
+                currentAnimation = sheepAnimations[0];*/
+            }
+        }
     }
 
     @Override

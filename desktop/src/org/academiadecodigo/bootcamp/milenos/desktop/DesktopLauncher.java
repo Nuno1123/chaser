@@ -9,6 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = DogTrials.WIDTH;
 		config.height = DogTrials.HEIGHT;
+		config.title = DogTrials.TITLE;
 		new LwjglApplication(new DogTrials(), config);
 	}
 }
