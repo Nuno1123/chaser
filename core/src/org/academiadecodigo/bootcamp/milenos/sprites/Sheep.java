@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
-import org.academiadecodigo.bootcamp.milenos.states.MenuState;
 import org.academiadecodigo.bootcamp.milenos.utils.Direction;
 
 import java.util.Iterator;
@@ -16,8 +15,11 @@ import java.util.Iterator;
  */
 public class Sheep extends Animal {
 
-    private static final String PATH = "sheep_animation.png";
-    private static final int NUM_FRAMES = 4;
+    private static final String PATH_WALK = "sheep_animation.png";
+    private static final int NUM_FRAMES_WALK = 4;
+
+    private static final String PATH_STOP = "sheep.png";
+    private static final int NUM_FRAMES_STOP = 1;
 
     private static final float CYCLE_TIME = 1f;
 
@@ -33,7 +35,8 @@ public class Sheep extends Animal {
     //TODO: see which properties should be in the super class
     private Vector2 position;
     private Vector2 velocity;
-    private Animation sheepAnimation;
+    private Animation currentAnimation;
+    private Animation[] sheepAnimations;
     private Rectangle bounds;
 
     private Direction direction;
@@ -55,17 +58,22 @@ public class Sheep extends Animal {
         lastPosition = position.cpy();
         currentVelocity = VELOCITY_GRAZE;
 
-        sheepAnimation = new Animation(new TextureRegion(new Texture(PATH)), NUM_FRAMES, CYCLE_TIME);
+        sheepAnimations = new Animation[]{
+                new Animation(new TextureRegion(new Texture(PATH_STOP)), NUM_FRAMES_STOP, CYCLE_TIME),
+                new Animation(new TextureRegion(new Texture(PATH_WALK)), NUM_FRAMES_WALK, CYCLE_TIME)
+        };
 
-        bounds = new Rectangle(x, y, sheepAnimation.getSprite().getWidth(), sheepAnimation.getSprite().getHeight());
+        currentAnimation = sheepAnimations[0];
+
+        bounds = new Rectangle(x, y, currentAnimation.getSprite().getWidth(), currentAnimation.getSprite().getHeight());
     }
 
     public Vector2 getPosition() {
         return position;
     }
 
-    public Animation getSheepAnimation() {
-        return sheepAnimation;
+    public Animation getCurrentAnimation() {
+        return currentAnimation;
     }
 
     //TODO: maybe, implement in the super class Animal (?!) since it's exactly the same
@@ -73,7 +81,7 @@ public class Sheep extends Animal {
 
         lastPosition = position.cpy(); // scp gives a new object instead of pointing to the same object.
 
-        sheepAnimation.update(dt);
+        currentAnimation.update(dt);
 
         if (position.y < 0) {
             position.y = 0;
@@ -98,12 +106,10 @@ public class Sheep extends Animal {
         velocity.scl(1 / dt);
         bounds.setPosition(position.x, position.y);
 
-        direction = Direction.getDirectionByAngle(sheepAnimation.getSprite().getRotation());
+        direction = Direction.getDirectionByAngle(currentAnimation.getSprite().getRotation());
     }
 
     public void move(Dog dog, Sheep[] sheeps) {
-
-        System.out.println("dst: " + position.dst(dog.getPosition()));
 
         // if dog is out of radius2:
         if (position.dst(dog.getPosition()) > radius2) {
@@ -149,8 +155,8 @@ public class Sheep extends Animal {
 
         //currentVelocity = VELOCITY_GRAZE;
 
-        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(sheepAnimation.getSprite().getRotation()));
-        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(sheepAnimation.getSprite().getRotation()));
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
     }
 
 
@@ -187,6 +193,7 @@ public class Sheep extends Animal {
         if (farAway) {
             //rotate in direction of the center point
             currentVelocity = VELOCITY_GRAZE;
+            currentAnimation = sheepAnimations[1];
             double angleToTurn = Math.atan2((double) centerPoint.y - position.y, (double) centerPoint.x - position.x);
             rotateSprites((float) Math.toDegrees(angleToTurn));
             return;
@@ -194,9 +201,10 @@ public class Sheep extends Animal {
 
         if (Math.random() * 10 > 1) {
             currentVelocity = 0;
+            currentAnimation = sheepAnimations[0];
         }
         int randomRotation = -1 + (int) (Math.random() * 1) + 1;
-        Iterator<Sprite> it = sheepAnimation.iterator();
+        Iterator<Sprite> it = currentAnimation.iterator();
         Sprite sprite;
 
         while (it.hasNext()) {
@@ -215,19 +223,24 @@ public class Sheep extends Animal {
         rotateHopelessly(dog);
 
         currentVelocity = VELOCITY_RUNNING;
+        currentAnimation = sheepAnimations[1];
 
-        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(sheepAnimation.getSprite().getRotation()));
-        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(sheepAnimation.getSprite().getRotation()));
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
     }
 
     private void rotateHopelessly(Dog dog) {
 
-        if (currentVelocity != VELOCITY_RUNNING) {
-            rotateSprites(dog.getAnimation().getSprite().getRotation() + 90);
-        }
 
-        int randomRotation = -1 + (int) (Math.random() * 1) + 1;
-        Iterator<Sprite> it = sheepAnimation.iterator();
+        double angleToTurn = Math.atan2((double) dog.getPosition().y - position.y, (double) dog.getPosition().x - position.x);
+        rotateSprites((float) Math.toDegrees(angleToTurn) + 180);
+
+        //if (currentVelocity != VELOCITY_RUNNING) {
+        // rotateSprites(dog.getAnimation().getSprite().getRotation() + 90);
+        // }
+
+        /*int randomRotation = -1 + (int) (Math.random() * 1) + 1;
+        Iterator<Sprite> it = currentAnimation.iterator();
         Sprite sprite;
 
         while (it.hasNext()) {
@@ -237,25 +250,35 @@ public class Sheep extends Animal {
             // careful: use ROTATE in this one, not SET_ROTATION
             sprite.rotate(randomRotation);
             sprite.setRotation((sprite.getRotation() + 360) % 360);
-        }
+        }*/
 
     }
 
     private void moveHalfSpeed(Dog dog) {
 
-        rotateAwayFromDog(dog);
+        rotateHalfSpeedDog(dog);
 
         currentVelocity = VELOCITY_WALKING;
+        currentAnimation = sheepAnimations[1];
 
-        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(sheepAnimation.getSprite().getRotation()));
-        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(sheepAnimation.getSprite().getRotation()));
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
     }
 
 
-    private void rotateAwayFromDog(Dog dog) {
+    private void rotateHalfSpeedDog(Dog dog) {
 
-        if (!Direction.isOpposite(dog.getDirection(), direction)) {
-            rotateSprites(dog.getAnimation().getSprite().getRotation() + 45);
+        if (!Direction.isOpposite(direction, dog.getDirection())) {
+
+            if (dog.getDirection() == direction) {
+                rotateSprites(dog.getAnimation().getSprite().getRotation());
+                return;
+            }
+
+            double angleToTurn = Math.atan2((double) dog.getPosition().y - position.y, (double) dog.getPosition().x - position.x);
+            rotateSprites((float) Math.toDegrees(angleToTurn) + 180);
+
+            //rotateSprites(dog.getAnimation().getSprite().getRotation() + 45);
             return;
         }
         rotateSprites(dog.getAnimation().getSprite().getRotation());
@@ -268,7 +291,7 @@ public class Sheep extends Animal {
      */
     private void rotateSprites(float angle) {
 
-        Iterator<Sprite> it = sheepAnimation.iterator();
+        Iterator<Sprite> it = currentAnimation.iterator();
         Sprite sprite;
 
         while (it.hasNext()) {
@@ -281,7 +304,7 @@ public class Sheep extends Animal {
 
 
     public void dispose() {
-        sheepAnimation.getSprite().getTexture().dispose();
+        currentAnimation.getSprite().getTexture().dispose();
     }
 
     @Override

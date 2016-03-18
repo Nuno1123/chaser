@@ -72,8 +72,8 @@ public class PlayState extends State {
         moveSheep();
 
         for (int i = 0; i < sheeps.length; i++) {
-            sheeps[i].getSheepAnimation().getSprite().setPosition(sheeps[i].getPosition().x, sheeps[i].getPosition().y);
-            sheeps[i].getSheepAnimation().getSprite().draw(sb);
+            sheeps[i].getCurrentAnimation().getSprite().setPosition(sheeps[i].getPosition().x, sheeps[i].getPosition().y);
+            sheeps[i].getCurrentAnimation().getSprite().draw(sb);
         }
 
         sb.end();
