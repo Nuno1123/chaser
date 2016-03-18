@@ -21,9 +21,9 @@ public class Sheep extends Animal {
 
     private static final float CYCLE_TIME = 1f;
 
-    private static final int radius1 = 50; // in pixels
-    private static final int radius2 = 60; // in pixels
-    private static final int SHEEP_RADIUS = 80; // in pixels
+    private static final int radius1 = 200; // in game units
+    private static final int radius2 = 300; // in game units
+    private static final int SHEEP_RADIUS = 80; // in game units
 
     //TODO: move this to the super class (?!)
     private static final int VELOCITY_RUNNING = 100;
@@ -56,6 +56,7 @@ public class Sheep extends Animal {
         currentVelocity = VELOCITY_GRAZE;
 
         sheepAnimation = new Animation(new TextureRegion(new Texture(PATH)), NUM_FRAMES, CYCLE_TIME);
+
         bounds = new Rectangle(x, y, sheepAnimation.getSprite().getWidth(), sheepAnimation.getSprite().getHeight());
     }
 
@@ -102,17 +103,16 @@ public class Sheep extends Animal {
 
     public void move(Dog dog, Sheep[] sheeps) {
 
-        double tempX = Math.abs(dog.getPosition().x + dog.getAnimation().getSprite().getWidth() / 2 - position.x + sheepAnimation.getSprite().getWidth() / 2);
-        double tempY = Math.abs(dog.getPosition().y + dog.getAnimation().getSprite().getHeight() / 2 - position.y + sheepAnimation.getSprite().getHeight() / 2);
+        System.out.println("dst: " + position.dst(dog.getPosition()));
 
         // if dog is out of radius2:
-        if (tempX > radius2 && tempY > radius2) {
+        if (position.dst(dog.getPosition()) > radius2) {
             moveQuietly(sheeps);
             return;
         }
 
         // if dog is inside of radius1:
-        if (tempX <= radius1 && tempY <= radius1) {
+        if (position.dst(dog.getPosition()) <= radius1) {
             moveHopelessly(dog);
             return;
         }
@@ -147,7 +147,7 @@ public class Sheep extends Animal {
 
         rotateToOtherSheep(sheeps);
 
-        currentVelocity = VELOCITY_GRAZE;
+        //currentVelocity = VELOCITY_GRAZE;
 
         velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(sheepAnimation.getSprite().getRotation()));
         velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(sheepAnimation.getSprite().getRotation()));
@@ -179,19 +179,22 @@ public class Sheep extends Animal {
         Vector2 centerPoint = findCenter(sheeps);
 
         // check if sheep is to far from the found center point
-        if (Math.abs(position.x - centerPoint.x) < SHEEP_RADIUS &&
-                Math.abs(position.y - centerPoint.y) < SHEEP_RADIUS) {
+        if (position.dst(centerPoint) < SHEEP_RADIUS) {
             farAway = false;
         }
 
         // if the sheep is far away from the center sheep point
         if (farAway) {
             //rotate in direction of the center point
+            currentVelocity = VELOCITY_GRAZE;
             double angleToTurn = Math.atan2((double) centerPoint.y - position.y, (double) centerPoint.x - position.x);
             rotateSprites((float) Math.toDegrees(angleToTurn));
             return;
         }
 
+        if (Math.random() * 10 > 1) {
+            currentVelocity = 0;
+        }
         int randomRotation = -1 + (int) (Math.random() * 1) + 1;
         Iterator<Sprite> it = sheepAnimation.iterator();
         Sprite sprite;
@@ -220,9 +223,10 @@ public class Sheep extends Animal {
     private void rotateHopelessly(Dog dog) {
 
         if (currentVelocity != VELOCITY_RUNNING) {
-            rotateSprites(dog.getAnimation().getSprite().getRotation() - 90);
+            rotateSprites(dog.getAnimation().getSprite().getRotation() + 90);
         }
 
+        int randomRotation = -1 + (int) (Math.random() * 1) + 1;
         Iterator<Sprite> it = sheepAnimation.iterator();
         Sprite sprite;
 
@@ -234,9 +238,6 @@ public class Sheep extends Animal {
             sprite.rotate(randomRotation);
             sprite.setRotation((sprite.getRotation() + 360) % 360);
         }
-
-
-
 
     }
 
@@ -253,6 +254,10 @@ public class Sheep extends Animal {
 
     private void rotateAwayFromDog(Dog dog) {
 
+        if (!Direction.isOpposite(dog.getDirection(), direction)) {
+            rotateSprites(dog.getAnimation().getSprite().getRotation() + 45);
+            return;
+        }
         rotateSprites(dog.getAnimation().getSprite().getRotation());
     }
 
