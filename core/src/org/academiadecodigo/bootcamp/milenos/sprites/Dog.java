@@ -44,7 +44,7 @@ public class Dog extends Animal {
 
     private int currentVelocity;
     private Direction direction;
-    private Vector2 lasPosition;
+    private Vector2 lastPosition;
 
 
     /**
@@ -56,6 +56,9 @@ public class Dog extends Animal {
 
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
+
+        direction = Direction.EIGHT_OCTANT;
+        lastPosition = position.cpy();
 
         dogAnimations = new Animation[]{
                 new Animation(new TextureRegion(new Texture(PATH_STOP)), NUM_FRAMES_STOP, CYCLE_TIME),
@@ -75,6 +78,10 @@ public class Dog extends Animal {
         return position;
     }
 
+    public Vector2 getLastPosition() {
+        return lastPosition;
+    }
+
     public int getCurrentVelocity() {
         return currentVelocity;
     }
@@ -83,14 +90,15 @@ public class Dog extends Animal {
         return currentAnimation;
     }
 
-    public Dog(Direction direction) {
-        this.direction = direction;
+    public Direction getDirection() {
+        return direction;
     }
 
     //reset the position in the game
     public void update(float dt) {
 
         //TODO: Correct the limits with the width and height of the image
+        lastPosition = position.cpy(); // scp gives a new object instead of pointing to the same object.
 
         currentAnimation.update(dt);
 
@@ -110,12 +118,14 @@ public class Dog extends Animal {
             position.x = DogTrials.WIDTH;
         }
 
-        //multiply velocity by a deltatime to scale
+        //multiply velocity by a deltaTime to scale
         velocity.scl(dt);
         position.add(velocity.x, velocity.y);
         //reverse the scaled velocity
         velocity.scl(1 / dt);
         bounds.setPosition(position.x, position.y);
+
+        direction = Direction.getDirectionByAngle(currentAnimation.getSprite().getRotation());
     }
 
     public void run() {
@@ -168,6 +178,7 @@ public class Dog extends Animal {
             sprite = it.next();
             sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
             sprite.rotate(1);
+            sprite.setRotation((sprite.getRotation() + 360) % 360);
         }
     }
 
@@ -180,6 +191,7 @@ public class Dog extends Animal {
             sprite = it.next();
             sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
             sprite.rotate(-1);
+            sprite.setRotation((sprite.getRotation() + 360) % 360);
         }
     }
 
@@ -192,9 +204,5 @@ public class Dog extends Animal {
     @Override
     public void move(int speed, int angle) {
 
-    }
-
-    public Rectangle getBounds() {
-        return bounds;
     }
 }

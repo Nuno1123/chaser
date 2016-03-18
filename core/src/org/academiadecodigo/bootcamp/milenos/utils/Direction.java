@@ -5,14 +5,14 @@ package org.academiadecodigo.bootcamp.milenos.utils;
  */
 public enum Direction {
 
-    FIRST_OCTANT(1f, 45f),
-    SECOND_OCTANT(46f, 90f),
-    THIRD_OCTANT(91f, 135f),
-    FOURTH_OCTANT(136f, 180f),
-    FIFTH_OCTANT(181f, 225f),
-    SIXTH_OCTANT(226f, 270f),
-    SEVENTH_OCTANT(271f, 315f),
-    EIGHT_OCTANT(316f, 0f);
+    FIRST_OCTANT(0f, 45f),
+    SECOND_OCTANT(45f, 90f),
+    THIRD_OCTANT(90f, 135f),
+    FOURTH_OCTANT(135f, 180f),
+    FIFTH_OCTANT(180f, 225f),
+    SIXTH_OCTANT(225f, 270f),
+    SEVENTH_OCTANT(270f, 315f),
+    EIGHT_OCTANT(315f, 360f);
 
     private float minAngle;
     private float maxAngle;
@@ -32,6 +32,9 @@ public enum Direction {
 
     public static Direction getDirectionByAngle(float angle) {
 
+        angle = (angle + 360) % 360;
+
+
         for (Direction direction : Direction.values()) {
 
             if (angle <= direction.maxAngle && angle >= direction.minAngle) {
@@ -39,12 +42,19 @@ public enum Direction {
             }
         }
 
+        System.out.println("null, ang: " + angle);
         return null;
     }
 
     public static boolean isOpposite(Direction d1, Direction d2) {
 
-        return d1.minAngle + 180 == d2.minAngle;
+        if (d1 == null || d2 == null) {
+            return false;
+        }
+
+        return (d1.minAngle + 180) % 360 == d2.minAngle
+                || (d1.minAngle + 225) % 360 == d2.minAngle
+                || (d1.minAngle + 135) % 360 == d2.minAngle;
     }
 
 
