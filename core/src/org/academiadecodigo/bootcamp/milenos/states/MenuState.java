@@ -1,6 +1,7 @@
 package org.academiadecodigo.bootcamp.milenos.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
@@ -33,6 +34,9 @@ public class MenuState extends State {
     //we need to close the box after putting all the things inside
     @Override
     public void render(SpriteBatch sb) {
+        Gdx.gl.glClearColor(0, 0.3f, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         sb.begin();
         sb.draw(background, 0, 0, DogTrials.WIDTH, DogTrials.HEIGHT);
         sb.end();

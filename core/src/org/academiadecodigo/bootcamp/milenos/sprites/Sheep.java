@@ -23,9 +23,10 @@ public class Sheep extends Animal {
 
     private static final float CYCLE_TIME = 1f;
 
-    private static final int radius1 = 200; // in game units
-    private static final int radius2 = 300; // in game units
-    private static final int SHEEP_RADIUS = 80; // in game units
+    //TODO: public to private or put in some config file.
+    public static final int radius1 = 200; // in game units
+    public static final int radius2 = 300; // in game units
+    public static final int SHEEP_RADIUS = 80; // in game units
 
     //TODO: move this to the super class (?!)
     private static final int VELOCITY_RUNNING = 100;

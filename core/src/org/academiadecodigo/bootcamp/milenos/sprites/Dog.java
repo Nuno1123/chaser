@@ -205,4 +205,8 @@ public class Dog extends Animal {
     public void move(int speed, int angle) {
 
     }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
 }
