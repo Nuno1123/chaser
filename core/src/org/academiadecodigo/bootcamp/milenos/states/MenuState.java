@@ -3,19 +3,43 @@ package org.academiadecodigo.bootcamp.milenos.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
+
+import java.util.Iterator;
 
 /**
  * Created by milena on 16/03/16.
  */
 public class MenuState extends State {
-    private Texture background;
+
+    /**
+     * Intro animation.
+     * TODO: Maybe anim can be only that round "logo" fx and the last transition (fade to image) can be achieved via the alpha channel when render???
+     */
+    private Animation introAnimation;
+
+    private float elapsedTime = 0f;
 
 
     public MenuState(GameStateManager gms) {
         super(gms);
-        background = new Texture("capa_game.jpg");
+
+        Array<TextureRegion> introFrames = new Array<TextureRegion>();
+        String filename = "";
+        for (int i = 0; i <= 91; i++) {
+            if (i < 10) {
+                filename = "intro-0000";
+            } else {
+                filename = "intro-000";
+            }
+            filename = filename + i + ".jpg";
+            introFrames.add(new TextureRegion(new Texture(Gdx.files.internal("anims/intro-raw/" + filename))));
+        }
+        introAnimation = new Animation(1f / 30f, introFrames, Animation.PlayMode.NORMAL);
     }
 
     @Override
@@ -34,16 +58,19 @@ public class MenuState extends State {
     //we need to close the box after putting all the things inside
     @Override
     public void render(SpriteBatch sb) {
+        elapsedTime += Gdx.graphics.getDeltaTime();
         Gdx.gl.glClearColor(0, 0.3f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         sb.begin();
-        sb.draw(background, 0, 0, DogTrials.WIDTH, DogTrials.HEIGHT);
+        sb.draw(introAnimation.getKeyFrame(elapsedTime), 0, 0);
         sb.end();
     }
 
     @Override
     public void dispose() {
-        background.dispose();
+        for (TextureRegion texReg : introAnimation.getKeyFrames()) {
+            texReg.getTexture().dispose();
+        }
     }
 }
