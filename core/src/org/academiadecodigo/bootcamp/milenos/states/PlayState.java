@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
 import org.academiadecodigo.bootcamp.milenos.sprites.Dog;
 import org.academiadecodigo.bootcamp.milenos.sprites.Sheep;
+import org.academiadecodigo.bootcamp.milenos.sprites.Shepperd;
 
 /**
  * Created by milena on 16/03/16.
@@ -23,6 +24,7 @@ public class PlayState extends State {
     private Dog dog;
     private Texture bg;
     private Sheep[] sheeps = new Sheep[NUM_SHEEPS];
+    private Shepperd shepperd;
 
     OrthographicCamera camera;
 
@@ -31,6 +33,7 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
         dog = new Dog(DOG_X, DOG_Y);
+        shepperd = new Shepperd()
         for (int i = 0; i < NUM_SHEEPS; i++) {
             sheeps[i] = new Sheep(400 + i * 100, 400);
         }
@@ -67,6 +70,7 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         dog.update(dt);
+        shepperd.update(dt);
 
         for (int i = 0; i < sheeps.length; i++) { //TODO: check collisions between sheeps, NOT WORKING YET
             Sheep sheep = sheeps[i];
@@ -92,6 +96,10 @@ public class PlayState extends State {
         // Move dog
         dog.getAnimation().getSprite().setPosition(dog.getPosition().x, dog.getPosition().y);
         dog.getAnimation().getSprite().draw(sb);
+
+        shepperd.rotate(dog);
+        shepperd.getShepperdAnimation().getSprite().draw(sb);
+
 
         // Move Sheep
         moveSheep();
@@ -135,6 +143,7 @@ public class PlayState extends State {
     public void dispose() {
         bg.dispose();
         dog.dispose();
+        shepperd.dispose();
         for (int i = 0; i < sheeps.length; i++) {
             sheeps[i].dispose();
         }

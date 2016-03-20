@@ -39,7 +39,7 @@ public class MenuState extends State {
             filename = filename + i + ".jpg";
             introFrames.add(new TextureRegion(new Texture(Gdx.files.internal("anims/intro-raw/" + filename))));
         }
-        introAnimation = new Animation(1f / 30f, introFrames, Animation.PlayMode.NORMAL);
+        introAnimation = new Animation(1f / 15f, introFrames, Animation.PlayMode.NORMAL);
     }
 
     @Override

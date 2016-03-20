@@ -2,6 +2,7 @@ package org.academiadecodigo.bootcamp.milenos;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,7 @@ public class DogTrials extends ApplicationAdapter {
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     public static final String TITLE = "Chaser";
+    Sound sound;
 
     private SpriteBatch batch;
     private GameStateManager gms;
@@ -25,6 +27,8 @@ public class DogTrials extends ApplicationAdapter {
         gms = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         gms.push(new MenuState(gms));
+        sound = Gdx.audio.newSound(Gdx.files.internal("intro.mp3"));
+        sound.play(1.0f);
     }
 
     @Override
