@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
 import org.academiadecodigo.bootcamp.milenos.utils.Direction;
 
@@ -64,7 +65,7 @@ public class Sheep extends Animal {
                 new Animation(new TextureRegion(new Texture(PATH_WALK)), NUM_FRAMES_WALK, CYCLE_TIME)
         };
 
-        currentAnimation = sheepAnimations[0];
+        currentAnimation = sheepAnimations[0]; // Only 1 frame so size is CORRECT! MUAHAHAHAHAHAH - Joana!
 
         bounds = new Rectangle(x, y, currentAnimation.getSprite().getWidth(), currentAnimation.getSprite().getHeight());
     }
@@ -122,7 +123,7 @@ public class Sheep extends Animal {
         direction = Direction.getDirectionByAngle(currentAnimation.getSprite().getRotation());
     }
 
-    public void move(Dog dog, Sheep[] sheeps) {
+    public void move(Dog dog, Array<Sheep> sheeps) {
 
         // if dog is out of radius2:
         if (position.dst(dog.getPosition()) > radius2) {
@@ -162,7 +163,7 @@ public class Sheep extends Animal {
 
     }
 
-    private void moveQuietly(Sheep[] sheeps) {
+    private void moveQuietly(Array<Sheep> sheeps) {
 
         rotateToOtherSheep(sheeps);
 
@@ -173,7 +174,7 @@ public class Sheep extends Animal {
     }
 
 
-    private Vector2 findCenter(Sheep[] sheeps) {
+    private Vector2 findCenter(Array<Sheep> sheeps) {
 
         float x = 0;
         float y = 0;
@@ -183,14 +184,14 @@ public class Sheep extends Animal {
             y += sheep.getPosition().y;
         }
 
-        x = x / sheeps.length;
-        y = y / sheeps.length;
+        x = x / sheeps.size;
+        y = y / sheeps.size;
 
         return new Vector2(x, y);
     }
 
 
-    private void rotateToOtherSheep(Sheep[] sheeps) {
+    private void rotateToOtherSheep(Array<Sheep> sheeps) {
 
         boolean farAway = true;
 

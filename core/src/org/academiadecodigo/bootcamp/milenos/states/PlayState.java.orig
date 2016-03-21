@@ -41,6 +41,10 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
         dog = new Dog(DOG_X, DOG_Y);
+<<<<<<< HEAD
+
+=======
+>>>>>>> cd85638096f3410277cc2cd83812b57f8734f89d
         for (int i = 0; i < NUM_SHEEPS; i++) {
             sheeps.add(new Sheep(400 + i * 100, 400));
         }
