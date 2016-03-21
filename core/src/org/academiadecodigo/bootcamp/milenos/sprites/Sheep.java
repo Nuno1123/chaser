@@ -16,6 +16,8 @@ import java.util.Iterator;
  */
 public class Sheep extends Animal {
 
+    private static final float LIMITS_CORRECTION = 10;
+
     private static final String PATH_WALK = "sheep_animation.png";
     private static final int NUM_FRAMES_WALK = 4;
 
@@ -101,8 +103,8 @@ public class Sheep extends Animal {
             position.y = 0;
         }
 
-        if (position.y >= (DogTrials.HEIGHT-currentAnimation.getHeight())) {
-            position.y = DogTrials.HEIGHT-currentAnimation.getHeight();
+        if (position.y >= (DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION)) {
+            position.y = DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION;
         }
 
         if (position.x < 0) {
@@ -181,13 +183,11 @@ public class Sheep extends Animal {
     }
 
     private void moveQuietly(Array<Sheep> sheeps) {
-            rotateToOtherSheep(sheeps);
 
-            //currentVelocity = VELOCITY_GRAZE;
+            rotateToOtherSheep(sheeps);
 
             velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
             velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));
-
     }
 
 

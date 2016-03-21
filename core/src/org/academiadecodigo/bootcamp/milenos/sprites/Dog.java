@@ -108,8 +108,8 @@ public class Dog extends Animal {
             position.y = 0;
         }
 
-        if (position.y >= (DogTrials.HEIGHT-currentAnimation.getHeight())) {
-            position.y = DogTrials.HEIGHT-currentAnimation.getHeight();
+        if (position.y >= (DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION)) {
+            position.y = DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION;
         }
 
         if (position.x < 0) {
