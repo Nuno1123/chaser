@@ -59,6 +59,7 @@ public class Animation {
 
     /**
      * Rotates all animation sprites to a given angle
+     * Sets the rotation origin to the center of the sprite
      *
      * @param angle rotation angle
      */
@@ -78,6 +79,7 @@ public class Animation {
 
     /**
      * Sets the rotation of all the animation sprites to a given angle
+     * Sets the rotation origin to the center of the sprite
      *
      * @param angle angle to rotate to
      */
@@ -89,6 +91,27 @@ public class Animation {
         while (it.hasNext()) {
             sprite = it.next();
             sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+            angle = (angle + 360) % 360; //normalize angle
+            sprite.setRotation(angle);
+        }
+    }
+
+    /**
+     * Sets the rotation of all the animation sprites to a given angle
+     * Sets the rotation origin to a given point
+     *
+     * @param angle   angle to rotate to
+     * @param originX origin of rotation in the x axis
+     * @param originY origin of rotation in the y axis
+     */
+    public void setAllSpritesRotation(float angle, float originX, float originY) {
+
+        Iterator<Sprite> it = sprites.iterator();
+        Sprite sprite;
+
+        while (it.hasNext()) {
+            sprite = it.next();
+            sprite.setOrigin(originX, originY);
             angle = (angle + 360) % 360; //normalize angle
             sprite.setRotation(angle);
         }
@@ -117,7 +140,6 @@ public class Animation {
     }
 
     /**
-     *
      * @return the sprites width
      */
     public float getWidth() {
@@ -125,7 +147,6 @@ public class Animation {
     }
 
     /**
-     *
      * @return the sprites height
      */
     public float getHeight() {

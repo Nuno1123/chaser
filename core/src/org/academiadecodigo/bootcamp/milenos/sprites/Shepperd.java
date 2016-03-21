@@ -34,8 +34,8 @@ public class Shepperd extends Animal {
         shepperdAnimation = new Animation(new TextureRegion(new Texture(PATH_SHEPPERD)), NUM_FRAMES, CYCLE_TIME);
 
         bounds = new Rectangle(x, y,
-                shepperdAnimation.getSprite().getWidth() / NUM_FRAMES,
-                shepperdAnimation.getSprite().getHeight());
+                shepperdAnimation.getWidth() / NUM_FRAMES,
+                shepperdAnimation.getHeight());
 
     }
 
@@ -54,26 +54,15 @@ public class Shepperd extends Animal {
         double dogPositionY = dog.getAnimation().getSprite().getY();
         double dogPositionX = dog.getAnimation().getSprite().getX();
         double angleToTurn = Math.atan2(dogPositionY - position.y, dogPositionX - position.x);
-        rotateSprites((float) Math.toDegrees(angleToTurn));
+
+        // kind of overrides to the Animation method because we need to set a different origin rotation
+        shepperdAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn),
+                shepperdAnimation.getWidth() / 5, shepperdAnimation.getHeight() / 2);
     }
-
-
+    
     public void dispose() {
 
         shepperdAnimation.getSprite().getTexture().dispose();
-    }
-
-    private void rotateSprites(float angle) {
-
-        Iterator<Sprite> it = shepperdAnimation.iterator();
-        Sprite sprite;
-
-        while (it.hasNext()) {
-            sprite = it.next();
-            sprite.setOrigin(sprite.getWidth() / 5, sprite.getHeight() / 2);
-            angle = (angle + 360) % 360;
-            sprite.setRotation(angle);
-        }
     }
 
     public Rectangle getBounds() {
