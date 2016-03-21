@@ -17,7 +17,7 @@ public class CollisionDetector {
         this.objects = objects;
     }
 
-    public boolean checkCollisionWithSheeps(Animal animal) {
+    public boolean checkCollisionWithAnimals(Animal animal) {
         return false;
     }
 
