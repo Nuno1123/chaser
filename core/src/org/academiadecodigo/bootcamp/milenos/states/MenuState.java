@@ -1,6 +1,7 @@
 package org.academiadecodigo.bootcamp.milenos.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -24,6 +25,8 @@ public class MenuState extends State {
 
     private float elapsedTime = 0f;
 
+    private Sound sound;
+
 
     public MenuState(GameStateManager gms) {
         super(gms);
@@ -40,7 +43,11 @@ public class MenuState extends State {
             introFrames.add(new TextureRegion(new Texture(Gdx.files.internal("anims/intro-raw/" + filename))));
         }
         introAnimation = new Animation(1f / 15f, introFrames, Animation.PlayMode.NORMAL);
+        sound = Gdx.audio.newSound(Gdx.files.internal("intro.mp3"));
+        sound.play(1.0f);
     }
+
+
 
     @Override
     public void handleInput() {
@@ -69,6 +76,7 @@ public class MenuState extends State {
 
     @Override
     public void dispose() {
+        sound.dispose();
         for (TextureRegion texReg : introAnimation.getKeyFrames()) {
             texReg.getTexture().dispose();
         }

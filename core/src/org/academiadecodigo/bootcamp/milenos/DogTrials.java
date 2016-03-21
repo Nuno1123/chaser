@@ -16,7 +16,6 @@ public class DogTrials extends ApplicationAdapter {
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     public static final String TITLE = "Chaser";
-    Sound sound;
 
     private SpriteBatch batch;
     private GameStateManager gms;
@@ -27,8 +26,6 @@ public class DogTrials extends ApplicationAdapter {
         gms = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         gms.push(new MenuState(gms));
-        sound = Gdx.audio.newSound(Gdx.files.internal("intro.mp3"));
-        sound.play(1.0f);
     }
 
     @Override

@@ -8,10 +8,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
+import org.academiadecodigo.bootcamp.milenos.Box;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
+import org.academiadecodigo.bootcamp.milenos.ObjectFactory;
+import org.academiadecodigo.bootcamp.milenos.ObjectType;
 import org.academiadecodigo.bootcamp.milenos.sprites.Dog;
 import org.academiadecodigo.bootcamp.milenos.sprites.Sheep;
 import org.academiadecodigo.bootcamp.milenos.sprites.Shepperd;
+
+import java.util.Iterator;
 
 /**
  * Created by milena on 16/03/16.
@@ -23,8 +29,10 @@ public class PlayState extends State {
 
     private Dog dog;
     private Texture bg;
-    private Sheep[] sheeps = new Sheep[NUM_SHEEPS];
+    private Array<Sheep> sheeps = new Array<Sheep>();
     private Shepperd shepperd;
+    private Box box;
+
 
     OrthographicCamera camera;
 
@@ -33,14 +41,19 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
         dog = new Dog(DOG_X, DOG_Y);
-        shepperd = new Shepperd()
         for (int i = 0; i < NUM_SHEEPS; i++) {
-            sheeps[i] = new Sheep(400 + i * 100, 400);
+            sheeps.add(new Sheep(400 + i * 100, 400));
         }
+
         bg = new Texture("bg.png");
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, DogTrials.WIDTH, DogTrials.HEIGHT);
+
+        box = (Box) ObjectFactory.getObject(ObjectType.BOX, new Texture("box.png"), 400, 250);
+
+        box.getBounds().setPosition(400, 600);
+        shepperd = new Shepperd(box.getX() + box.getWidth(), box.getY() - 70);
 
         shapeRenderer = new ShapeRenderer();
     }
@@ -72,13 +85,14 @@ public class PlayState extends State {
         dog.update(dt);
         shepperd.update(dt);
 
-        for (int i = 0; i < sheeps.length; i++) { //TODO: check collisions between sheeps, NOT WORKING YET
+        //TODO: check collisions between sheeps, NOT WORKING YET
+/*        for (int i = 0; i < sheeps.length; i++) {
             Sheep sheep = sheeps[i];
             sheep.collides(sheeps);
-        }
+        }*/
 
-        for (int i = 0; i < sheeps.length; i++) {
-            sheeps[i].update(dt);
+        for (int i = 0; i < sheeps.size; i++) {
+            sheeps.get(i).update(dt);
         }
     }
 
@@ -100,14 +114,18 @@ public class PlayState extends State {
         shepperd.rotate(dog);
         shepperd.getShepperdAnimation().getSprite().draw(sb);
 
+        sb.draw(box.getTexture(), box.getX(), box.getY());
+
 
         // Move Sheep
         moveSheep();
 
-        for (int i = 0; i < sheeps.length; i++) {
-            sheeps[i].getCurrentAnimation().getSprite().setPosition(sheeps[i].getPosition().x, sheeps[i].getPosition().y);
-            sheeps[i].getCurrentAnimation().getSprite().draw(sb);
+
+        for (int i = 0; i < sheeps.size; i++) {
+            sheeps.get(i).getCurrentAnimation().getSprite().setPosition(sheeps.get(i).getPosition().x, sheeps.get(i).getPosition().y);
+            sheeps.get(i).getCurrentAnimation().getSprite().draw(sb);
         }
+
 
         sb.end();
 
@@ -115,28 +133,44 @@ public class PlayState extends State {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         //shapeRenderer.setColor(Color.BLUE);
-        for (int i = 0; i < sheeps.length; i++) {
+        for (int i = 0; i < sheeps.size; i++) {
             shapeRenderer.setColor(Color.RED);
             shapeRenderer.circle(
-                    sheeps[i].getPosition().x + sheeps[i].getBounds().getWidth() / 2,
-                    sheeps[i].getPosition().y + sheeps[i].getBounds().getHeight() / 2,
+                    sheeps.get(i).getPosition().x + sheeps.get(i).getBounds().getWidth() / 2,
+                    sheeps.get(i).getPosition().y + sheeps.get(i).getBounds().getHeight() / 2,
                     Sheep.SHEEP_RADIUS);
             shapeRenderer.setColor(Color.YELLOW);
             shapeRenderer.circle(
-                    sheeps[i].getPosition().x + sheeps[i].getBounds().getWidth() / 2,
-                    sheeps[i].getPosition().y + sheeps[i].getBounds().getHeight() / 2,
+                    sheeps.get(i).getPosition().x + sheeps.get(i).getBounds().getWidth() / 2,
+                    sheeps.get(i).getPosition().y + sheeps.get(i).getBounds().getHeight() / 2,
                     Sheep.radius1);
             shapeRenderer.setColor(Color.WHITE);
             shapeRenderer.circle(
-                    sheeps[i].getPosition().x + sheeps[i].getBounds().getWidth() / 2,
-                    sheeps[i].getPosition().y + sheeps[i].getBounds().getHeight() / 2,
+                    sheeps.get(i).getPosition().x + sheeps.get(i).getBounds().getWidth() / 2,
+                    sheeps.get(i).getPosition().y + sheeps.get(i).getBounds().getHeight() / 2,
                     Sheep.radius2);
+
+            // sheep collisions with box
+            if (box.getBounds().contains(sheeps.get(i).getBounds())) {
+                shapeRenderer.setColor(Color.MAGENTA);
+                sheeps.removeIndex(i);
+            } else {
+                shapeRenderer.setColor(Color.BLUE);
+                shapeRenderer.rect(sheeps.get(i).getBounds().getX(), sheeps.get(i).getBounds().getY(),
+                        sheeps.get(i).getBounds().getWidth(), sheeps.get(i).getBounds().getHeight());
+            }
+
         }
 
-        shapeRenderer.rect(dog.getBounds().getX(), dog.getBounds().getY(), dog.getBounds().getWidth(), dog.getBounds().getHeight());
 
-        //shapeRenderer.rect();
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(dog.getBounds().getX(), dog.getBounds().getY(), dog.getBounds().getWidth(), dog.getBounds().getHeight());
+        shapeRenderer.rect(shepperd.getBounds().getX(), shepperd.getBounds().getY(), 5, 5);
+
+        shapeRenderer.setColor(Color.ORANGE);
+        shapeRenderer.rect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
         shapeRenderer.end();
+
     }
 
     @Override
@@ -144,15 +178,16 @@ public class PlayState extends State {
         bg.dispose();
         dog.dispose();
         shepperd.dispose();
-        for (int i = 0; i < sheeps.length; i++) {
-            sheeps[i].dispose();
+        for (int i = 0; i < sheeps.size; i++) {
+            sheeps.get(i).dispose();
         }
+        box.dispose();
         shapeRenderer.dispose();
     }
 
     public void moveSheep() {
-        for (int i = 0; i < sheeps.length; i++) {
-            sheeps[i].move(dog, sheeps);
+        for (int i = 0; i < sheeps.size; i++) {
+            sheeps.get(i).move(dog, sheeps);
         }
     }
 }
