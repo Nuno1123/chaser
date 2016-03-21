@@ -59,7 +59,7 @@ public class Shepperd extends Animal {
         shepperdAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn),
                 shepperdAnimation.getWidth() / 5, shepperdAnimation.getHeight() / 2);
     }
-    
+
     public void dispose() {
 
         shepperdAnimation.getSprite().getTexture().dispose();

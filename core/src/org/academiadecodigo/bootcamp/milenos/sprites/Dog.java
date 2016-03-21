@@ -3,21 +3,18 @@ package org.academiadecodigo.bootcamp.milenos.sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
 import org.academiadecodigo.bootcamp.milenos.utils.Direction;
 
-import java.util.Iterator;
-
 /**
  * Created by milena on 14/03/16.
  */
 public class Dog extends Animal {
 
-    private static final float LIMITS_CORRECTION = 10;
+    private static final float Y_LIMIT_CORRECTION = 25;
 
     private static final String PATH_STOP = "dog_stop.png";
     private static final int NUM_FRAMES_STOP = 1;
@@ -60,7 +57,7 @@ public class Dog extends Animal {
      */
     public Dog(int x, int y) {
 
-        position = new Vector2(x, y);
+        position = new Vector2(x, y + Y_LIMIT_CORRECTION);
         velocity = new Vector2(0, 0);
 
         direction = Direction.EIGHT_OCTANT;
@@ -77,7 +74,7 @@ public class Dog extends Animal {
         currentAnimation = dogAnimations[0];
         currentVelocity = 0;
 
-        bounds = new Rectangle(x, y,
+        bounds = new Rectangle(x, y + Y_LIMIT_CORRECTION,
                 currentAnimation.getWidth() / NUM_FRAMES_STOP,
                 currentAnimation.getHeight());
     }
@@ -110,12 +107,12 @@ public class Dog extends Animal {
 
         currentAnimation.update(dt);
 
-        if (position.y < 0) {
-            position.y = 0;
+        if (position.y < Y_LIMIT_CORRECTION) {
+            position.y = Y_LIMIT_CORRECTION;
         }
 
-        if (position.y >= (DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION)) {
-            position.y = DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION;
+        if (position.y >= (DogTrials.HEIGHT - currentAnimation.getHeight() - Y_LIMIT_CORRECTION)) {
+            position.y = DogTrials.HEIGHT - currentAnimation.getHeight() - Y_LIMIT_CORRECTION;
         }
 
         if (position.x < 0) {

@@ -3,6 +3,7 @@ package org.academiadecodigo.bootcamp.milenos.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.particles.values.LineSpawnShapeValue;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -16,7 +17,7 @@ import java.util.Iterator;
  */
 public class Sheep extends Animal {
 
-    private static final float LIMITS_CORRECTION = 10;
+    private static final float Y_LIMIT_CORRECTION = 25;
 
     private static final String PATH_WALK = "sheep_animation.png";
     private static final int NUM_FRAMES_WALK = 4;
@@ -55,7 +56,7 @@ public class Sheep extends Animal {
      */
     public Sheep(int x, int y) {
 
-        position = new Vector2(x, y);
+        position = new Vector2(x, y + Y_LIMIT_CORRECTION);
         velocity = new Vector2(0, 0);
 
         direction = Direction.EIGHT_OCTANT;
@@ -69,7 +70,7 @@ public class Sheep extends Animal {
 
         currentAnimation = sheepAnimations[0]; // Only 1 frame so size is CORRECT! MUAHAHAHAHAHAH - Joana!
 
-        bounds = new Rectangle(x, y, currentAnimation.getWidth(), currentAnimation.getHeight());
+        bounds = new Rectangle(x, y + Y_LIMIT_CORRECTION, currentAnimation.getWidth(), currentAnimation.getHeight());
     }
 
     public Rectangle getBounds() {
@@ -99,12 +100,12 @@ public class Sheep extends Animal {
 
         currentAnimation.update(dt);
 
-        if (position.y < 0) {
-            position.y = 0;
+        if (position.y < Y_LIMIT_CORRECTION) {
+            position.y = Y_LIMIT_CORRECTION;
         }
 
-        if (position.y >= (DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION)) {
-            position.y = DogTrials.HEIGHT-currentAnimation.getHeight()-LIMITS_CORRECTION;
+        if (position.y >= (DogTrials.HEIGHT - currentAnimation.getHeight() - Y_LIMIT_CORRECTION)) {
+            position.y = DogTrials.HEIGHT - currentAnimation.getHeight() - Y_LIMIT_CORRECTION;
         }
 
         if (position.x < 0) {
@@ -175,8 +176,8 @@ public class Sheep extends Animal {
                 continue;
             }
             if (currentSheep.getBounds().overlaps(this.bounds)) { // TODO: Fix this tomorrow!
-                this.currentAnimation.getSprite().setRotation(currentSheep.getCurrentAnimation().getRotation());
-                return true;
+                //    this.currentAnimation.getSprite().setRotation(currentSheep.getCurrentAnimation().getRotation());
+                return false;
             }
         }
         return false;
