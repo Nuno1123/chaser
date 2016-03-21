@@ -136,6 +136,11 @@ public class PlayState extends State {
 
         sb.end();
 
+
+        //TODO: remove debug info
+
+
+        /*
         // DEGUB INFO
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -177,6 +182,10 @@ public class PlayState extends State {
         shapeRenderer.setColor(Color.ORANGE);
         shapeRenderer.rect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
         shapeRenderer.end();
+
+        */
+
+
 
     }
 
