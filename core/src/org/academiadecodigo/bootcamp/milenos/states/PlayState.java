@@ -3,6 +3,7 @@ package org.academiadecodigo.bootcamp.milenos.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +22,7 @@ import org.academiadecodigo.bootcamp.milenos.sprites.Shepperd;
 public class PlayState extends State {
     public static final int DOG_X = 0;
     public static final int DOG_Y = 0;
-    private static final int NUM_SHEEPS = 4;
+    private static final int NUM_SHEEPS = 8;
 
     private Dog dog;
     private Texture bg;
@@ -150,7 +151,6 @@ public class PlayState extends State {
 
 
         //TODO: use the commented code bellow for debug info
-        /*
         // DEGUB INFO
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -193,7 +193,6 @@ public class PlayState extends State {
         shapeRenderer.rect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
         shapeRenderer.end();
 
-        */
 
 
 
