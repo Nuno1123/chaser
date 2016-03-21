@@ -15,6 +15,8 @@ import java.util.Iterator;
  */
 public class Dog extends Animal {
 
+    private static final float LIMITS_CORRECTION = 10;
+
     private static final String PATH_STOP = "dog_stop.png";
     private static final int NUM_FRAMES_STOP = 1;
 
@@ -70,8 +72,8 @@ public class Dog extends Animal {
         currentVelocity = 0;
 
         bounds = new Rectangle(x, y,
-                currentAnimation.getSprite().getWidth() / NUM_FRAMES_RUN,
-                currentAnimation.getSprite().getHeight());
+                currentAnimation.getWidth() / NUM_FRAMES_STOP,
+                currentAnimation.getHeight());
     }
 
     public Vector2 getPosition() {
@@ -106,16 +108,16 @@ public class Dog extends Animal {
             position.y = 0;
         }
 
-        if (position.y >= DogTrials.HEIGHT) {
-            position.y = DogTrials.HEIGHT;
+        if (position.y >= (DogTrials.HEIGHT-currentAnimation.getHeight())) {
+            position.y = DogTrials.HEIGHT-currentAnimation.getHeight();
         }
 
         if (position.x < 0) {
             position.x = 0;
         }
 
-        if (position.x >= DogTrials.WIDTH) {
-            position.x = DogTrials.WIDTH;
+        if (position.x >= (DogTrials.WIDTH-currentAnimation.getWidth())) {
+            position.x = DogTrials.WIDTH-currentAnimation.getWidth();
         }
 
         //multiply velocity by a deltaTime to scale
@@ -125,7 +127,7 @@ public class Dog extends Animal {
         velocity.scl(1 / dt);
         bounds.setPosition(position.x, position.y);
 
-        direction = Direction.getDirectionByAngle(currentAnimation.getSprite().getRotation());
+        direction = Direction.getDirectionByAngle(currentAnimation.getRotation());
     }
 
     public void run() {
@@ -133,8 +135,8 @@ public class Dog extends Animal {
         currentAnimation = dogAnimations[2];
         currentVelocity = VELOCITY_RUNNING;
 
-        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
-        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));
     }
 
     public void walk() {
@@ -142,8 +144,8 @@ public class Dog extends Animal {
         currentAnimation = dogAnimations[1];
         currentVelocity = VELOCITY_WALKING;
 
-        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getSprite().getRotation()));
-        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getSprite().getRotation()));
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));
     }
 
     public void stop() {
@@ -171,28 +173,12 @@ public class Dog extends Animal {
 
     private void rotateAllSpritesLeft(Animation dogAnimation) {
 
-        Iterator<Sprite> it = dogAnimation.iterator();
-        Sprite sprite;
-
-        while (it.hasNext()) {
-            sprite = it.next();
-            sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-            sprite.rotate(1);
-            sprite.setRotation((sprite.getRotation() + 360) % 360);
-        }
+        dogAnimation.rotateAllSprites(1);
     }
 
     private void rotateAllSpritesRight(Animation dogAnimation) {
 
-        Iterator<Sprite> it = dogAnimation.iterator();
-        Sprite sprite;
-
-        while (it.hasNext()) {
-            sprite = it.next();
-            sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-            sprite.rotate(-1);
-            sprite.setRotation((sprite.getRotation() + 360) % 360);
-        }
+        dogAnimation.rotateAllSprites(-1);
     }
 
     public void dispose() {
