@@ -1,7 +1,7 @@
 package org.academiadecodigo.bootcamp.milenos.utils;
 
 import com.badlogic.gdx.utils.Array;
-import org.academiadecodigo.bootcamp.milenos.GameObject;
+import org.academiadecodigo.bootcamp.milenos.game_objects.GameObject;
 import org.academiadecodigo.bootcamp.milenos.sprites.Animal;
 
 /**

@@ -7,8 +7,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.academiadecodigo.bootcamp.milenos.sprites.Dog;
-import org.academiadecodigo.bootcamp.milenos.sprites.Sheep;
 import org.academiadecodigo.bootcamp.milenos.states.GameStateManager;
 import org.academiadecodigo.bootcamp.milenos.states.MenuState;
 

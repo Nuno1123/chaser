@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.milenos;
+package org.academiadecodigo.bootcamp.milenos.game_objects;
 
 import com.badlogic.gdx.graphics.Texture;
 
@@ -15,10 +15,10 @@ public class ObjectFactory {
                 gameObject = new Box(image, width, height);
                 break;
             case FENCES:
-                //gameObject = new Box();
+                gameObject = new Fences(image, width, height);
                 break;
-            case PILAR:
-                //gameObject = new Box();
+            case PILLAR:
+                gameObject = new Pillar(image, width, height);
                 break;
         }
         return gameObject;

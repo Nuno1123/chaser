@@ -1,17 +1,18 @@
-package org.academiadecodigo.bootcamp.milenos;
+package org.academiadecodigo.bootcamp.milenos.game_objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
- * Created by milena on 14/03/16.
+ * Created by Joana Falcão on 21/03/16
  */
-public class Box implements GameObject, Disposable {
+public class Pillar implements GameObject, Disposable {
+
     private Rectangle bounds;
     private Texture image;
 
-    public Box(Texture image, float width, float height) {
+    public Pillar(Texture image, float width, float height) {
         this.image = image;
         bounds = new Rectangle();
         bounds.setWidth(width);
@@ -48,4 +49,6 @@ public class Box implements GameObject, Disposable {
     public void dispose() {
         image.dispose();
     }
+
+
 }

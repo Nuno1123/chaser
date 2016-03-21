@@ -3,22 +3,17 @@ package org.academiadecodigo.bootcamp.milenos.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import org.academiadecodigo.bootcamp.milenos.Box;
+import org.academiadecodigo.bootcamp.milenos.game_objects.*;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
-import org.academiadecodigo.bootcamp.milenos.ObjectFactory;
-import org.academiadecodigo.bootcamp.milenos.ObjectType;
 import org.academiadecodigo.bootcamp.milenos.sprites.Dog;
 import org.academiadecodigo.bootcamp.milenos.sprites.Sheep;
 import org.academiadecodigo.bootcamp.milenos.sprites.Shepperd;
-
-import java.util.Iterator;
 
 /**
  * Created by milena on 16/03/16.
@@ -32,7 +27,11 @@ public class PlayState extends State {
     private Texture bg;
     private Array<Sheep> sheeps = new Array<Sheep>();
     private Shepperd shepperd;
+
     private Box box;
+    private Fences fences;
+    private Pillar pillar;
+
     private Music sheepSound;
 
 
@@ -54,7 +53,16 @@ public class PlayState extends State {
 
         box = (Box) ObjectFactory.getObject(ObjectType.BOX, new Texture("box.png"), 400, 250);
 
+        //TODO: we need to have an array of gameObjects... this is just to show in presentation
+        //TODO: the box is special!! there can be only one
+        fences = (Fences) ObjectFactory.getObject(ObjectType.FENCES, new Texture("fence.png"), 400, 9);
+        pillar = (Pillar) ObjectFactory.getObject(ObjectType.PILLAR, new Texture("pole.png"), 25, 25);
+
+        //TODO: in the future this should be set randomly on the field
         box.getBounds().setPosition(400, 600);
+        fences.getBounds().setPosition(1000, 150);
+        pillar.getBounds().setPosition(1500, 650);
+
         shepperd = new Shepperd(box.getX() + box.getWidth(), box.getY() - 70);
 
         sheepSound = Gdx.audio.newMusic(Gdx.files.internal("sheep.mp3"));
@@ -121,7 +129,10 @@ public class PlayState extends State {
         shepperd.rotate(dog);
         shepperd.getShepperdAnimation().getSprite().draw(sb);
 
+        // add GameObjects to the sb
         sb.draw(box.getTexture(), box.getX(), box.getY());
+        sb.draw(fences.getTexture(), fences.getX(), fences.getY());
+        sb.draw(pillar.getTexture(), pillar.getX(), pillar.getY());
 
 
         // Move Sheep
@@ -137,9 +148,7 @@ public class PlayState extends State {
         sb.end();
 
 
-        //TODO: remove debug info
-
-
+        //TODO: use the commented code bellow for debug info
         /*
         // DEGUB INFO
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -192,13 +201,20 @@ public class PlayState extends State {
     @Override
     public void dispose() {
         bg.dispose();
+
+        // dispose animals
         dog.dispose();
         shepperd.dispose();
         sheepSound.dispose();
         for (int i = 0; i < sheeps.size; i++) {
             sheeps.get(i).dispose();
         }
+
+        // dispose game objects
         box.dispose();
+        pillar.dispose();
+        fences.dispose();
+
         shapeRenderer.dispose();
     }
 
