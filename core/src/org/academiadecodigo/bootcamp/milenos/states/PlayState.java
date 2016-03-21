@@ -2,6 +2,7 @@ package org.academiadecodigo.bootcamp.milenos.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,6 +33,7 @@ public class PlayState extends State {
     private Array<Sheep> sheeps = new Array<Sheep>();
     private Shepperd shepperd;
     private Box box;
+    private Music sheepSound;
 
 
     OrthographicCamera camera;
@@ -54,6 +56,10 @@ public class PlayState extends State {
 
         box.getBounds().setPosition(400, 600);
         shepperd = new Shepperd(box.getX() + box.getWidth(), box.getY() - 70);
+
+        sheepSound = Gdx.audio.newMusic(Gdx.files.internal("sheep.mp3"));
+        sheepSound.setLooping(true);
+        sheepSound.play();
 
         shapeRenderer = new ShapeRenderer();
     }
@@ -178,6 +184,7 @@ public class PlayState extends State {
         bg.dispose();
         dog.dispose();
         shepperd.dispose();
+        sheepSound.dispose();
         for (int i = 0; i < sheeps.size; i++) {
             sheeps.get(i).dispose();
         }
