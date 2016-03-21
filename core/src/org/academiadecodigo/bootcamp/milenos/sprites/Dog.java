@@ -12,7 +12,7 @@ import org.academiadecodigo.bootcamp.milenos.utils.Direction;
 /**
  * Created by milena on 14/03/16.
  */
-public class Dog extends Animal {
+public class Dog implements Character, Movable {
 
     private static final float Y_LIMIT_CORRECTION = 25;
 
@@ -99,10 +99,26 @@ public class Dog extends Animal {
         return direction;
     }
 
+    @Override
+    public void move(MoveType moveType) {
+
+        switch (moveType) {
+
+            case STOP:
+                stop();
+                return;
+            case WALK:
+                walk();
+                return;
+            case RUN:
+                run();
+                break;
+        }
+    }
+
     //reset the position in the game
     public void update(float dt) {
 
-        //TODO: Correct the limits with the width and height of the image
         lastPosition = position.cpy(); // scp gives a new object instead of pointing to the same object.
 
         currentAnimation.update(dt);
@@ -191,11 +207,6 @@ public class Dog extends Animal {
         for (Animation anim : dogAnimations) {
             anim.getSprite().getTexture().dispose();
         }
-    }
-
-    @Override
-    public void move(int speed, int angle) {
-
     }
 
     public Rectangle getBounds() {

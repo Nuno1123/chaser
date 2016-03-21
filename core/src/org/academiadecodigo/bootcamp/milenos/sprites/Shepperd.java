@@ -1,17 +1,14 @@
 package org.academiadecodigo.bootcamp.milenos.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.Iterator;
-
 /**
  * Created by codecadet on 20/03/16.
  */
-public class Shepperd extends Animal {
+public class Shepperd extends Character {
 
     @Override
     public void move(int speed, int angle) {

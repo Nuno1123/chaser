@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import org.academiadecodigo.bootcamp.milenos.game_objects.*;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
 import org.academiadecodigo.bootcamp.milenos.sprites.Dog;
+import org.academiadecodigo.bootcamp.milenos.sprites.MoveType;
 import org.academiadecodigo.bootcamp.milenos.sprites.Sheep;
 import org.academiadecodigo.bootcamp.milenos.sprites.Shepperd;
 
@@ -34,9 +35,7 @@ public class PlayState extends State {
     private Pillar pillar;
 
     private Music sheepSound;
-
-
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
 
     private ShapeRenderer shapeRenderer; // for debug info
 
@@ -88,11 +87,11 @@ public class PlayState extends State {
 
         // Keys for dog speed
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            dog.run();
+            dog.move(MoveType.RUN);
         } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            dog.walk();
+            dog.move(MoveType.WALK);
         } else {
-            dog.stop();
+            dog.move(MoveType.STOP);
         }
     }
 
@@ -192,9 +191,6 @@ public class PlayState extends State {
         shapeRenderer.setColor(Color.ORANGE);
         shapeRenderer.rect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
         shapeRenderer.end();
-
-
-
 
     }
 

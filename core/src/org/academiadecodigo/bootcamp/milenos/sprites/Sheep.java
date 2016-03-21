@@ -1,9 +1,7 @@
 package org.academiadecodigo.bootcamp.milenos.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.particles.values.LineSpawnShapeValue;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -15,7 +13,7 @@ import java.util.Iterator;
 /**
  * Created by milena on 14/03/16.
  */
-public class Sheep extends Animal {
+public class Sheep implements Character, Movable {
 
     private static final float Y_LIMIT_CORRECTION = 25;
 
@@ -32,12 +30,10 @@ public class Sheep extends Animal {
     public static final int radius2 = 300; // in game units
     public static final int SHEEP_RADIUS = 80; // in game units
 
-    //TODO: move this to the super class (?!)
     private static final int VELOCITY_RUNNING = 100;
     private static final int VELOCITY_WALKING = 40;
     private static final int VELOCITY_GRAZE = 10;
 
-    //TODO: see which properties should be in the super class
     private Vector2 position;
     private Vector2 velocity;
     private Animation currentAnimation;
@@ -93,7 +89,6 @@ public class Sheep extends Animal {
         return currentAnimation;
     }
 
-    //TODO: maybe, implement in the super class Animal (?!) since it's exactly the same
     public void update(float dt) {
 
         lastPosition = position.cpy(); // scp gives a new object instead of pointing to the same object.
@@ -165,6 +160,7 @@ public class Sheep extends Animal {
 
             moveQuietly(sheeps);
     }
+
 
     private boolean sheepHasCollidedWithSheeps(Array<Sheep> sheeps) {
         Iterator<Sheep> sheepIterator = sheeps.iterator();
@@ -314,29 +310,13 @@ public class Sheep extends Animal {
         }
     }
 
-
-
     public void dispose() {
         currentAnimation.getSprite().getTexture().dispose();
     }
 
-    public void collides(Sheep[] sheeps) { //TODO: set velocity to 0 when sheeps collide
-        for (int i = 0; i < sheeps.length; i++) {
-            if (this.equals(sheeps[i])) {
-                continue;
-            }
-            if (sheeps[i].getBounds().overlaps(bounds)) {
-                System.out.println("sheeps collided");
-                /*sheeps[i].setCurrentVelocity(0);
-                sheeps[i].setCurrentAnimation(sheepAnimations[0]);
-                currentVelocity = 0;
-                currentAnimation = sheepAnimations[0];*/
-            }
-        }
-    }
-
     @Override
-    public void move(int speed, int angle) {
+    public void move(MoveType moveType) {
+
     }
 
 }
