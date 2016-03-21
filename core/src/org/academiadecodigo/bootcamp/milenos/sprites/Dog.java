@@ -1,5 +1,7 @@
 package org.academiadecodigo.bootcamp.milenos.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -31,6 +33,8 @@ public class Dog extends Animal {
     private final int VELOCITY_RUNNING = 140;
     private final int VELOCITY_WALKING = 60;
 
+    private Music dogRunning;
+
     public int getVelocityRunning() {
         return VELOCITY_RUNNING;
     }
@@ -61,6 +65,8 @@ public class Dog extends Animal {
 
         direction = Direction.EIGHT_OCTANT;
         lastPosition = position.cpy();
+
+        dogRunning = Gdx.audio.newMusic(Gdx.files.internal("dogRunning.mp3"));
 
         dogAnimations = new Animation[]{
                 new Animation(new TextureRegion(new Texture(PATH_STOP)), NUM_FRAMES_STOP, CYCLE_TIME),
@@ -134,6 +140,9 @@ public class Dog extends Animal {
         // Sets the current animation and velocity to the running dog
         currentAnimation = dogAnimations[2];
         currentVelocity = VELOCITY_RUNNING;
+
+        dogRunning.setLooping(true);
+        dogRunning.play();
 
         velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
         velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));

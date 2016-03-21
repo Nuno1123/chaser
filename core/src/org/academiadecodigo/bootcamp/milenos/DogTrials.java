@@ -45,7 +45,7 @@ public class DogTrials extends ApplicationAdapter {
         if (introMusic.isPlaying() || soundMusic.isPlaying()) {
             return;
         }
-        soundMusic.setVolume(0.4f);
+        soundMusic.setVolume(0.35f);
         soundMusic.setLooping(true);
         soundMusic.play();
     }
