@@ -55,6 +55,7 @@ public class PlayState extends State {
 
         //TODO: we need to have an array of gameObjects... this is just to show in presentation
         //TODO: the box is special!! there can be only one
+        //TODO: maybe put the image path and sizes in the factory (?!)
         fences = (Fences) ObjectFactory.getObject(ObjectType.FENCES, new Texture("fence.png"), 400, 9);
         pillar = (Pillar) ObjectFactory.getObject(ObjectType.PILLAR, new Texture("pole.png"), 25, 25);
 
