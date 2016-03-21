@@ -59,6 +59,7 @@ public class PlayState extends State {
 
         sheepSound = Gdx.audio.newMusic(Gdx.files.internal("sheep.mp3"));
         sheepSound.setLooping(true);
+        sheepSound.setVolume(0.7f);
         sheepSound.play();
 
         shapeRenderer = new ShapeRenderer();
