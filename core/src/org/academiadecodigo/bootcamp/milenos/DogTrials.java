@@ -14,12 +14,11 @@ import org.academiadecodigo.bootcamp.milenos.states.MenuState;
 
 public class DogTrials extends ApplicationAdapter {
 
-    public static final int WIDTH = 1890;
-    public static final int HEIGHT = 1080;
+    public static final int WIDTH = 1742;
+    public static final int HEIGHT = 980;
     public static final String TITLE = "Chaser";
-    public Music soundMusic;
-    public Music introMusic;
-    private float startTime;
+    private Music soundMusic;
+    private Music introMusic;
     private SpriteBatch batch;
     private GameStateManager gms;
 
@@ -29,7 +28,6 @@ public class DogTrials extends ApplicationAdapter {
         gms = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         gms.push(new MenuState(gms));
-        startTime = Gdx.graphics.getDeltaTime();
         introMusic = Gdx.audio.newMusic(Gdx.files.internal("intro.mp3"));
         introMusic.play();
         soundMusic = Gdx.audio.newMusic(Gdx.files.internal("playstateMusic.mp3"));
@@ -47,7 +45,6 @@ public class DogTrials extends ApplicationAdapter {
         if (introMusic.isPlaying() || soundMusic.isPlaying()) {
             return;
         }
-
         soundMusic.setVolume(0.6f);
         soundMusic.setLooping(true);
         soundMusic.play();
