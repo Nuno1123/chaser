@@ -19,7 +19,7 @@ public class Shepperd extends Animal {
     }
 
     private static final String PATH_SHEPPERD = "shepperd.png";
-    private static final int NUM_FRAMES = 10;
+    private static final int NUM_FRAMES = 8;
     private static final float CYCLE_TIME = 5.00f;
 
     private Animation shepperdAnimation;
