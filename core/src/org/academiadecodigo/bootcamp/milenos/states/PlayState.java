@@ -33,7 +33,7 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
         dog = new Dog(DOG_X, DOG_Y);
-        shepperd = new Shepperd()
+
         for (int i = 0; i < NUM_SHEEPS; i++) {
             sheeps[i] = new Sheep(400 + i * 100, 400);
         }
