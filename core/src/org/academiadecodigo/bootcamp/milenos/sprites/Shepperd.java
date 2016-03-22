@@ -8,12 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by codecadet on 20/03/16.
  */
-public class Shepperd extends Character {
-
-    @Override
-    public void move(int speed, int angle) {
-
-    }
+public class Shepperd implements Character {
 
     private static final String PATH_SHEPPERD = "shepperd.png";
     private static final int NUM_FRAMES = 8;
