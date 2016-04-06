@@ -50,4 +50,4 @@ Design
   * Original Programming Structure by [Milena Baeza](https://github.com/milebza) and [Joana Falcão](https://github.com/joanaferrofalcao)
   * Graphics Design/Animation Design by [Nuno Monteiro](https://github.com/Nuno1123)
   * Kinetics Mathematics and Code Refactoring by [Joana Falcão](https://github.com/joanaferrofalcao) and [Itamar Lourenço](https://github.com/italou)
-  * Overall Game Logic by [Itamar Lourenço](https://github.com/italou), [Joana Falcão](https://github.com/joanaferrofalcao), [Milena Baeza](https://github.com/milebza) and [Nuno Monteiro]((https://github.com/Nuno1123)
+  * Overall Game Logic by [Itamar Lourenço](https://github.com/italou), [Joana Falcão](https://github.com/joanaferrofalcao), [Milena Baeza](https://github.com/milebza) and [Nuno Monteiro](https://github.com/Nuno1123)
