@@ -1,5 +1,6 @@
 package org.academiadecodigo.bootcamp.milenos.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,12 +26,16 @@ public class Sheep implements Character, Movable {
 
     private static final float CYCLE_TIME = 1f;
 
+    private static final long CHANGE_DIRECTION_TIMER = 750; // in milliseconds!
+    private long lastDirectionChangeTime;
+
+
     //TODO: public to private or put in some config file.
     public static final int radius1 = 200; // in game units
     public static final int radius2 = 300; // in game units
     public static final int SHEEP_RADIUS = 80; // in game units
 
-    private static final int VELOCITY_RUNNING = 100;
+    private static final int VELOCITY_RUNNING = 75;
     private static final int VELOCITY_WALKING = 40;
     private static final int VELOCITY_GRAZE = 10;
 
@@ -67,6 +72,7 @@ public class Sheep implements Character, Movable {
         currentAnimation = sheepAnimations[0]; // Only 1 frame so size is CORRECT! MUAHAHAHAHAHAH - Joana!
 
         bounds = new Rectangle(x, y + Y_LIMIT_CORRECTION, currentAnimation.getWidth(), currentAnimation.getHeight());
+        lastDirectionChangeTime = System.currentTimeMillis();
     }
 
     public Rectangle getBounds() {
@@ -107,8 +113,8 @@ public class Sheep implements Character, Movable {
             position.x = 0;
         }
 
-        if (position.x >= (DogTrials.WIDTH-currentAnimation.getWidth())) {
-            position.x = DogTrials.WIDTH-currentAnimation.getWidth();
+        if (position.x >= (DogTrials.WIDTH - currentAnimation.getWidth())) {
+            position.x = DogTrials.WIDTH - currentAnimation.getWidth();
         }
 
         //multiply velocity by a deltaTime to scale
@@ -124,41 +130,41 @@ public class Sheep implements Character, Movable {
     public void move(Dog dog, Array<Sheep> sheeps) {
 
 
-            // if dog is out of radius2:
-            if (position.dst(dog.getPosition()) > radius2) {
-                moveQuietly(sheeps);
-                return;
-            }
-
-            // if dog is inside of radius1:
-            if (position.dst(dog.getPosition()) <= radius1) {
-                moveHopelessly(dog, sheeps);
-                return;
-            }
-
-            // dog is inside of radius2 and out of radius1:
-            // if dog is running:
-            if (dog.getCurrentVelocity() == dog.getVelocityRunning()) {
-                moveHopelessly(dog, sheeps);
-                return;
-            }
-
-            // if distance is smaller AND dog direction is opposite to sheep's, regardless of dog's speed:
-            if (dog.getPosition().dst(position) < dog.getLastPosition().dst(lastPosition) &&
-                    Direction.isOpposite(direction, dog.getDirection())) {
-                moveHopelessly(dog, sheeps);
-                return;
-            }
-
-            // if distance is smaller AND dog is walking:
-            if (dog.getCurrentVelocity() == dog.getVelocityWalking() &&
-                    dog.getPosition().dst(position) < dog.getLastPosition().dst(lastPosition)) {
-                moveHalfSpeed(dog, sheeps);
-                //System.out.println("sheep moving half speed");
-                return;
-            }
-
+        // if dog is out of radius2:
+        if (position.dst(dog.getPosition()) > radius2) {
             moveQuietly(sheeps);
+            return;
+        }
+
+        // if dog is inside of radius1:
+        if (position.dst(dog.getPosition()) <= radius1) {
+            moveHopelessly(dog, sheeps);
+            return;
+        }
+
+        // dog is inside of radius2 and out of radius1:
+        // if dog is running:
+        if (dog.getCurrentVelocity() == dog.getVelocityRunning()) {
+            moveHopelessly(dog, sheeps);
+            return;
+        }
+
+        // if distance is smaller AND dog direction is opposite to sheep's, regardless of dog's speed:
+        if (dog.getPosition().dst(position) < dog.getLastPosition().dst(lastPosition) &&
+                Direction.isOpposite(direction, dog.getDirection())) {
+            moveHopelessly(dog, sheeps);
+            return;
+        }
+
+        // if distance is smaller AND dog is walking:
+        if (dog.getCurrentVelocity() == dog.getVelocityWalking() &&
+                dog.getPosition().dst(position) < dog.getLastPosition().dst(lastPosition)) {
+            moveHalfSpeed(dog, sheeps);
+            //System.out.println("sheep moving half speed");
+            return;
+        }
+
+        moveQuietly(sheeps);
     }
 
 
@@ -181,10 +187,10 @@ public class Sheep implements Character, Movable {
 
     private void moveQuietly(Array<Sheep> sheeps) {
 
-            rotateToOtherSheep(sheeps);
+        rotateToOtherSheep(sheeps);
 
-            velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
-            velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));
     }
 
 
@@ -205,7 +211,17 @@ public class Sheep implements Character, Movable {
     }
 
 
+    private boolean changeDirection() {
+        return System.currentTimeMillis() - lastDirectionChangeTime > CHANGE_DIRECTION_TIMER;
+    }
+
+
     private void rotateToOtherSheep(Array<Sheep> sheeps) {
+
+
+        if (!changeDirection()) {
+            return;
+        }
 
         if (!sheepHasCollidedWithSheeps(sheeps)) {
             boolean farAway = true;
@@ -225,6 +241,7 @@ public class Sheep implements Character, Movable {
                 currentAnimation = sheepAnimations[1];
                 double angleToTurn = Math.atan2((double) centerPoint.y - position.y, (double) centerPoint.x - position.x);
                 currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn));
+                lastDirectionChangeTime = System.currentTimeMillis();
                 return;
             }
 
@@ -235,8 +252,9 @@ public class Sheep implements Character, Movable {
 
             int randomRotation = -1 + (int) (Math.random() * 1) + 1;
             currentAnimation.rotateAllSprites(randomRotation);
-
+            lastDirectionChangeTime = System.currentTimeMillis();
         }
+
     }
 
 
@@ -252,6 +270,10 @@ public class Sheep implements Character, Movable {
     }
 
     private void rotateHopelessly(Dog dog, Array<Sheep> sheeps) {
+
+        if (!changeDirection()) {
+            return;
+        }
 
         if (!sheepHasCollidedWithSheeps(sheeps)) {
             double angleToTurn = Math.atan2((double) dog.getPosition().y - position.y, (double) dog.getPosition().x - position.x);
@@ -274,7 +296,9 @@ public class Sheep implements Character, Movable {
             sprite.setRotation((sprite.getRotation() + 360) % 360);
         }*/
 
+            lastDirectionChangeTime = System.currentTimeMillis();
         }
+
     }
 
     private void moveHalfSpeed(Dog dog, Array<Sheep> sheeps) {
@@ -291,12 +315,17 @@ public class Sheep implements Character, Movable {
 
     private void rotateHalfSpeedDog(Dog dog, Array<Sheep> sheeps) {
 
+        if (!changeDirection()) {
+            return;
+        }
+
         if (!sheepHasCollidedWithSheeps(sheeps)) {
 
             if (!Direction.isOpposite(direction, dog.getDirection())) {
 
                 if (dog.getDirection() == direction) {
                     currentAnimation.setAllSpritesRotation(dog.getAnimation().getRotation());
+                    lastDirectionChangeTime = System.currentTimeMillis();
                     return;
                 }
 
@@ -304,10 +333,13 @@ public class Sheep implements Character, Movable {
                 currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn) + 180);
 
                 //rotateSprites(dog.getAnimation().getSprite().getRotation() + 45);
+                lastDirectionChangeTime = System.currentTimeMillis();
                 return;
             }
             currentAnimation.setAllSpritesRotation(dog.getAnimation().getRotation());
+            lastDirectionChangeTime = System.currentTimeMillis();
         }
+
     }
 
     public void dispose() {
