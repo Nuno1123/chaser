@@ -1,6 +1,5 @@
 package org.academiadecodigo.bootcamp.milenos.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -26,8 +25,8 @@ public class Sheep implements Character, Movable {
 
     private static final float CYCLE_TIME = 1f;
 
-    private static final long CHANGE_DIRECTION_TIMER = 750; // in milliseconds!
-    private long lastDirectionChangeTime;
+    private static final long CHANGE_DIRECTION_TIMER = 750; // in milliseconds
+    private long lastDirectionChangeTime; // in milliseconds
 
 
     //TODO: public to private or put in some config file.
@@ -36,7 +35,7 @@ public class Sheep implements Character, Movable {
     public static final int SHEEP_RADIUS = 80; // in game units
 
     private static final int VELOCITY_RUNNING = 75;
-    private static final int VELOCITY_WALKING = 40;
+    private static final int VELOCITY_WALKING = 30;
     private static final int VELOCITY_GRAZE = 10;
 
     private Vector2 position;
@@ -69,7 +68,7 @@ public class Sheep implements Character, Movable {
                 new Animation(new TextureRegion(new Texture(PATH_WALK)), NUM_FRAMES_WALK, CYCLE_TIME)
         };
 
-        currentAnimation = sheepAnimations[0]; // Only 1 frame so size is CORRECT! MUAHAHAHAHAHAH - Joana!
+        currentAnimation = sheepAnimations[0]; // Only 1 frame
 
         bounds = new Rectangle(x, y + Y_LIMIT_CORRECTION, currentAnimation.getWidth(), currentAnimation.getHeight());
         lastDirectionChangeTime = System.currentTimeMillis();
@@ -160,7 +159,6 @@ public class Sheep implements Character, Movable {
         if (dog.getCurrentVelocity() == dog.getVelocityWalking() &&
                 dog.getPosition().dst(position) < dog.getLastPosition().dst(lastPosition)) {
             moveHalfSpeed(dog, sheeps);
-            //System.out.println("sheep moving half speed");
             return;
         }
 
@@ -237,22 +235,48 @@ public class Sheep implements Character, Movable {
             // if the sheep is far away from the center sheep point
             if (farAway) {
                 //rotate in direction of the center point
-                currentVelocity = VELOCITY_GRAZE;
+                currentVelocity = VELOCITY_WALKING;
                 currentAnimation = sheepAnimations[1];
                 double angleToTurn = Math.atan2((double) centerPoint.y - position.y, (double) centerPoint.x - position.x);
-                currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn));
+
+                setAllAnimationsRotation((float) Math.toDegrees(angleToTurn));
+                //currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn));
                 lastDirectionChangeTime = System.currentTimeMillis();
                 return;
             }
 
-            if (Math.random() * 10 > 1) {
+            currentVelocity = VELOCITY_GRAZE;
+
+
+            if (Math.random() * 10 > 3) {
                 currentVelocity = 0;
                 currentAnimation = sheepAnimations[0];
+                return;
             }
 
-            int randomRotation = -1 + (int) (Math.random() * 1) + 1;
-            currentAnimation.rotateAllSprites(randomRotation);
+            int randomRotation = generateRandom(-5,5);
+            rotateAllAnimations(randomRotation);
+            System.out.println(randomRotation);
+            //currentAnimation.rotateAllSprites(randomRotation);
             lastDirectionChangeTime = System.currentTimeMillis();
+
+        }
+
+    }
+
+    public static int generateRandom(int min, int max) {
+        return ((int) (Math.random() * (max - min + 1) + min));
+    }
+
+    private void setAllAnimationsRotation(float angle) {
+        for (Animation animation : sheepAnimations ) {
+            animation.setAllSpritesRotation(angle);
+        }
+    }
+
+    private void rotateAllAnimations(float angle) {
+        for (Animation animation : sheepAnimations) {
+            animation.rotateAllSprites(angle);
         }
 
     }
@@ -277,25 +301,10 @@ public class Sheep implements Character, Movable {
 
         if (!sheepHasCollidedWithSheeps(sheeps)) {
             double angleToTurn = Math.atan2((double) dog.getPosition().y - position.y, (double) dog.getPosition().x - position.x);
-            currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn) + 180);
 
-            //if (currentVelocity != VELOCITY_RUNNING) {
-            // rotateSprites(dog.getAnimation().getSprite().getRotation() + 90);
-            // }
+            setAllAnimationsRotation((float) Math.toDegrees(angleToTurn) + 180);
 
-        /*int randomRotation = -1 + (int) (Math.random() * 1) + 1;
-        Iterator<Sprite> it = currentAnimation.iterator();
-        Sprite sprite;
-
-        while (it.hasNext()) {
-            sprite = it.next();
-            sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-
-            // careful: use ROTATE in this one, not SET_ROTATION
-            sprite.rotate(randomRotation);
-            sprite.setRotation((sprite.getRotation() + 360) % 360);
-        }*/
-
+            //currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn) + 180);
             lastDirectionChangeTime = System.currentTimeMillis();
         }
 
@@ -324,19 +333,23 @@ public class Sheep implements Character, Movable {
             if (!Direction.isOpposite(direction, dog.getDirection())) {
 
                 if (dog.getDirection() == direction) {
-                    currentAnimation.setAllSpritesRotation(dog.getAnimation().getRotation());
+
+                    setAllAnimationsRotation(dog.getAnimation().getRotation());
+                    //currentAnimation.setAllSpritesRotation(dog.getAnimation().getRotation());
                     lastDirectionChangeTime = System.currentTimeMillis();
                     return;
                 }
 
                 double angleToTurn = Math.atan2((double) dog.getPosition().y - position.y, (double) dog.getPosition().x - position.x);
-                currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn) + 180);
+                //currentAnimation.setAllSpritesRotation((float) Math.toDegrees(angleToTurn) + 180);
+                setAllAnimationsRotation((float) Math.toDegrees(angleToTurn) + 180);
 
-                //rotateSprites(dog.getAnimation().getSprite().getRotation() + 45);
                 lastDirectionChangeTime = System.currentTimeMillis();
                 return;
             }
-            currentAnimation.setAllSpritesRotation(dog.getAnimation().getRotation());
+
+            setAllAnimationsRotation(dog.getAnimation().getRotation());
+            //currentAnimation.setAllSpritesRotation(dog.getAnimation().getRotation());
             lastDirectionChangeTime = System.currentTimeMillis();
         }
 

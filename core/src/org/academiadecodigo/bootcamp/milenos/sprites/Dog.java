@@ -31,8 +31,7 @@ public class Dog implements Character, Movable {
 
     private final int VELOCITY_RUNNING = 140;
     private final int VELOCITY_WALKING = 60;
-
-    private final int STANDING_ROTATION_VELOCITY = 50;
+    private final int VELOCITY_STANDING = 0;
 
     private Music dogRunning;
 
@@ -154,6 +153,21 @@ public class Dog implements Character, Movable {
         direction = Direction.getDirectionByAngle(currentAnimation.getRotation());
     }
 
+    //TODO: switch all run/walk/stop methods with this one
+    public void move(int velocityToBe, Animation animation, boolean music) {
+        currentAnimation = animation;
+        currentVelocity = velocityToBe;
+
+        // TODO: add music to other movements and change music type to Music
+        dogRunning.setLooping(music);
+        if(music) {
+            dogRunning.play();
+        }
+
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));
+    }
+
     public void run() {
         // Sets the current animation and velocity to the running dog
         currentAnimation = dogAnimations[2];
@@ -178,12 +192,10 @@ public class Dog implements Character, Movable {
     public void stop() {
         // Sets the current animation and velocity to the stop dog
         currentAnimation = dogAnimations[0];
-        currentVelocity = 0;
+        currentVelocity = VELOCITY_STANDING;
 
-        velocity.x = 0;
-        velocity.y = 0;
-
-
+        velocity.x = currentVelocity * (float) Math.cos(Math.toRadians(currentAnimation.getRotation()));
+        velocity.y = currentVelocity * (float) Math.sin(Math.toRadians(currentAnimation.getRotation()));
     }
 
     public void rotateLeft() {
@@ -192,6 +204,7 @@ public class Dog implements Character, Movable {
             rotateAllSpritesLeft(dogAnimation);
         }
     }
+
 
     public void rotateRight() {
         // Rotate all animations
@@ -203,12 +216,22 @@ public class Dog implements Character, Movable {
 
     private void rotateAllSpritesLeft(Animation dogAnimation) {
 
+        if (currentVelocity == VELOCITY_STANDING) {
+            //TODO: add currentDogAnimation to stupid dog running after tail
+            dogAnimation.rotateAllSprites(8);
+            return;
+        }
         dogAnimation.rotateAllSprites(1);
 
     }
 
     private void rotateAllSpritesRight(Animation dogAnimation) {
 
+        if (currentVelocity == VELOCITY_STANDING) {
+            //TODO: add currentDogAnimation to stupid dog running after tail
+            dogAnimation.rotateAllSprites(-8);
+            return;
+        }
         dogAnimation.rotateAllSprites(-1);
 
     }
