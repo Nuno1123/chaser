@@ -1,7 +1,7 @@
 Chaser
 ======
 
-This project is a group project exercise proposed by **Academia de Código** at ​Bootcamp #2​ to get used to a stronger and more complex library, LibGDX. For the first time in the course there were no guidelines. That opened a door for creativity.We came up with an idea to make an Sheep Herding Trials game, where the user controls a Working Sheepdog to heard sheeps to complete a course.
+This project is a group project exercise proposed by **Academia de Código** at _Bootcamp #2_ to get used to a stronger and more complex library, LibGDX. For the first time in the course there were no guidelines. That opened a door for creativity.We came up with an idea to make an Sheep Herding Trials game, where the user controls a Working Sheepdog to heard sheeps to complete a course.
 This is still a work in progress.
 
 Creators
