@@ -1,9 +1,11 @@
 package org.academiadecodigo.bootcamp.milenos.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleShader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import org.academiadecodigo.bootcamp.milenos.DogTrials;
@@ -29,6 +31,8 @@ public class Dog implements Character, Movable {
 
     private final int VELOCITY_RUNNING = 140;
     private final int VELOCITY_WALKING = 60;
+
+    private final int STANDING_ROTATION_VELOCITY = 50;
 
     private Music dogRunning;
 
@@ -142,6 +146,7 @@ public class Dog implements Character, Movable {
         //multiply velocity by a deltaTime to scale
         velocity.scl(dt);
         position.add(velocity.x, velocity.y);
+
         //reverse the scaled velocity
         velocity.scl(1 / dt);
         bounds.setPosition(position.x, position.y);
@@ -177,6 +182,8 @@ public class Dog implements Character, Movable {
 
         velocity.x = 0;
         velocity.y = 0;
+
+
     }
 
     public void rotateLeft() {
@@ -193,14 +200,17 @@ public class Dog implements Character, Movable {
         }
     }
 
+
     private void rotateAllSpritesLeft(Animation dogAnimation) {
 
         dogAnimation.rotateAllSprites(1);
+
     }
 
     private void rotateAllSpritesRight(Animation dogAnimation) {
 
         dogAnimation.rotateAllSprites(-1);
+
     }
 
     public void dispose() {

@@ -80,6 +80,7 @@ public class PlayState extends State {
         // Keys for dog rotation
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             dog.rotateLeft();
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             dog.rotateRight();
@@ -149,11 +150,13 @@ public class PlayState extends State {
         sb.end();
 
 
-        //TODO: use the commented code bellow for debug info
+      //TODO: use the commented code bellow for debug info
         // DEGUB INFO
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         //shapeRenderer.setColor(Color.BLUE);
+/*
+
         for (int i = 0; i < sheeps.size; i++) {
             shapeRenderer.setColor(Color.RED);
             shapeRenderer.circle(
@@ -183,7 +186,7 @@ public class PlayState extends State {
 
         }
 
-
+*/
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(dog.getBounds().getX(), dog.getBounds().getY(), dog.getBounds().getWidth(), dog.getBounds().getHeight());
         shapeRenderer.rect(shepperd.getBounds().getX(), shepperd.getBounds().getY(), 5, 5);
